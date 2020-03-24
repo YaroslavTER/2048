@@ -1,4 +1,5 @@
-const boxList = Array.from(document.getElementsByClassName('box')),
+const boxList = Array.from(document.getElementsByClassName('box')),//generate boxList with two items
+//with random positions
       size = {
         grid: 4,
         cell: 100
@@ -21,143 +22,13 @@ let prevTimeList = [...new Array(boxList.length)].map(() => 0),
     }
   ];
 
-
-/* 
-{
-  number: 2,
-  margin: {
-    top: 0,
-    left: 0
-  }
-},
-{
-  number: 2,
-  margin: {
-    top: 400,
-    left: 0
-  }
-}
-
-down button
-
-{
-  number: 4,
-  margin: {
-    top: 400,
-    left: 0
-  }
-}
-
--------------
-
-{
-  number: 4,
-  margin: {
-    top: 0,
-    left: 0
-  }
-},
-{
-  number: 2,
-  margin: {
-    top: 400,
-    left: 0
-  }
-}
-
-down button
-
-{
-  number: 4,
-  margin: {
-    top: 300,
-    left: 0
-  }
-},
-{
-  number: 2,
-  margin: {
-    top: 400,
-    left: 0
-  }
-}
-
--------------
-
-{
-  number: 4,
-  margin: {
-    top: 0,
-    left: 0
-  }
-},
-{
-  number: 4,
-  margin: {
-    top: 300,
-    left: 0
-  }
-},
-{
-  number: 2,
-  margin: {
-    top: 400,
-    left: 0
-  }
-}
-
-down button
-
-{
-  number: 4,
-  margin: {
-    top: 200,
-    left: 0
-  }
-},
-{
-  number: 4,
-  margin: {
-    top: 0,
-    left: 300
-  }
-},
-{
-  number: 2,
-  margin: {
-    top: 400,
-    left: 0
-  }
-}
-
-up button
-
-{
-  number: 4,
-  margin: {
-    top: 0,
-    left: 0
-  }
-},
-{
-  number: 4,
-  margin: {
-    top: 200,
-    left: 0
-  }
-},
-{
-  number: 2,
-  margin: {
-    top: 300,
-    left: 0
-  }
-}
-
-*/
-
 document.addEventListener('keydown', function({keyCode, which}) {
-  boxList.forEach((box, index) => {
+  //handle moves
+
+  //render list
+
+  boxList.forEach((box, index) => {//change box list based on handleMove calculations
+    //it means to update the box list on every move
     const keycode = keyCode ? keyCode : which,
           startValue = '0px',
           shiftValue = `${size.cell * size.grid}px`,
@@ -175,17 +46,18 @@ document.addEventListener('keydown', function({keyCode, which}) {
     }
 
     switch(keycode) {
-      case(40):
-        box.style.marginTop = shiftValue;//`shitValue` will be result of `colisionHandler` for the `box`
+      case(40)://find item from the reuslt list of the calculateMoveDown by the key property
+        box.style.marginTop = shiftValue;//value from handleMoveDown for particular box
+        //`shitValue` will be result of handleMoveDown for the `box`
         break;
       case(39):
-        box.style.marginLeft = shiftValue;
+        box.style.marginLeft = shiftValue;//handleMoveRight
         break;
       case(38):
-        box.style.marginTop = startValue;
+        box.style.marginTop = startValue;//handleMoveUp
         break;
       case(37):
-        box.style.marginLeft = startValue;
+        box.style.marginLeft = startValue;//handleMoveLeft
         break;
     }
 
@@ -194,19 +66,106 @@ document.addEventListener('keydown', function({keyCode, which}) {
 });
 
 /* 
-handle colision for each move: bottom, up, left, right
+handleMoveUp
+
+filter items from the list with equal leftMargin
+
+calculate next list
 */
 
-function colisionHandler(inputItemList) {
-  const length = inputItemList.length;
+function calculateMoveDown(inputItemList) {
   let itemList = deepClone(inputItemList);
+  for(let i = 0; i < itemList.length; i++) {
+    let subList = itemList
+      .filter(item => item.margin.left === i * size.cell)
+      .sort(({margin: { top: topA } }, {margin: { top: topB }}) => topA - topB);
+    //add itemList then shift margin tops
+    //problem: how to merge items by animation
+    //solve: to move items that will be merged on the same place
+    console.log(subList);
+  }
+}
 
-  for(let i = 0; i < length; i++) {
-    for(let j = 0; j < length; j++) {
+calculateMoveDown([
+  {
+    number: 2,
+    key: 2,
+    margin: {
+      top: 100,
+      left: 0
+    },
+  },
+  {
+    number: 2,
+    key: 1,
+    margin: {
+      top: 0,
+      left: 0
+    }
+  },
+  {
+    number: 2,
+    key: 3,
+    margin: {
+      top: 300,
+      left: 0
+    },
+  },
+  {
+    number: 4,
+    key: 4,
+    margin: {
+      top: 400,
+      left: 0
     }
   }
-  return itemList;
+]);
+
+/*
+{
+  number: 2,
+  key: 1,
+  margin: {
+    top: 0,
+    left: 0
+  }
+},
+{
+  number: 2,
+  key: 3,
+  margin: {
+    top: 300,
+    left: 0
+  },
+},
+{
+  number: 4,
+  key: 2,
+  margin: {
+    top: 400,
+    left: 0
+  }
 }
+
+press key donw
+
+{
+  number: 4,
+  key: 3,
+  margin: {
+    top: 300,
+    left: 0
+  },
+},
+{
+  number: 4,
+  key: 2,
+  margin: {
+    top: 400,
+    left: 0
+  }
+}
+*/
 
 function deepClone(list) {
   return JSON.parse(JSON.stringify(list));

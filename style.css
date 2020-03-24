@@ -1,15 +1,15 @@
-.box {
-    background-color: gray;
-    height: 100px;
-    width: 100px;
-  }
-  
-  .aux {
-    margin-top: 400px;
-  }
-  
-  .animation {
-    transition: margin 0.5s cubic-bezier(0, .7, 0, 1);
-  }
-  
+.box {/* to make different z-indexs for every each box */
+  height: 100px;
+  width: 100px;
+  background-color: gray;
+}
+
+.aux {
+  margin-top: 400px;
+}
+
+.animation {
+  transition: margin 0.5s cubic-bezier(0, .7, 0, 1);
+}
+
   
