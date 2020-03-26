@@ -75,15 +75,40 @@ calculate next list
 
 function calculateMoveDown(inputItemList) {
   let itemList = deepClone(inputItemList);
-  for(let i = 0; i < itemList.length; i++) {
+  const resultItemList = [...new Array(itemList.length)]
+    .reduce((accumulator, currentValue, i) => {
+      let subList = itemList
+        .filter(item => item.margin.left === i * size.cell)
+        .sort(({margin: { top: topA } }, {margin: { top: topB }}) => topA - topB);
+      
+      return accumulator.concat(moveDown(subList));
+    }, []);
+  console.log(resultItemList);
+  /* for(let i = 0; i < itemList.length; i++) {
     let subList = itemList
       .filter(item => item.margin.left === i * size.cell)
       .sort(({margin: { top: topA } }, {margin: { top: topB }}) => topA - topB);
-    //add itemList then shift margin tops
-    //problem: how to merge items by animation
-    //solve: to move items that will be merged on the same place
-    console.log(subList);
+  } */
+}
+
+function moveDown(inputSubList) {
+  let resultList = [],
+    { grid: counter, cell} = size;
+
+  for(let i = inputSubList.length - 1; i >= 0; i--) {
+    let {number, key, margin: {left}} = inputSubList[i];
+    resultList.unshift({
+      number, 
+      key,
+      margin: { 
+        top: counter * cell,
+        left
+      }
+    });
+    counter--;
   }
+
+  return resultList;
 }
 
 calculateMoveDown([
@@ -91,7 +116,7 @@ calculateMoveDown([
     number: 2,
     key: 2,
     margin: {
-      top: 100,
+      top: 200,
       left: 0
     },
   },
@@ -115,7 +140,7 @@ calculateMoveDown([
     number: 4,
     key: 4,
     margin: {
-      top: 400,
+      top: 100,
       left: 0
     }
   }
