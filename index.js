@@ -1,28 +1,12 @@
 const boxList = Array.from(document.getElementsByClassName('box')),//generate boxList with two items
 //with random positions
       size = {
-        grid: 4,
+        grid: 3,
         cell: 100
       };
-let prevTimeList = [...new Array(boxList.length)].map(() => 0),
-  itemList = [
-    {
-      number: 2,
-      margin: {
-        top: 0,
-        left: 0
-      }
-    },
-    {
-      number: 2,
-      margin: {
-        top: 400,
-        left: 0
-      }
-    }
-  ];
+let prevTimeList = [...new Array(boxList.length)].map(() => 0);
 
-document.addEventListener('keydown', function({keyCode, which}) {
+document.addEventListener('keydown', ({keyCode, which}) => {
   //handle moves
 
   //render list
@@ -73,30 +57,47 @@ filter items from the list with equal leftMargin
 calculate next list
 */
 
-function calculateMoveDown(inputItemList) {
-  let itemList = deepClone(inputItemList);
-  const resultItemList = [...new Array(itemList.length)]
+const calculateMoveDown = itemList => calculateMove(itemList, 'left', 'top', moveDown);
+  /* [...new Array(itemList.length)]
     .reduce((accumulator, currentValue, i) => {
       let subList = itemList
         .filter(item => item.margin.left === i * size.cell)
         .sort(({margin: { top: topA } }, {margin: { top: topB }}) => topA - topB);
       
       return accumulator.concat(moveDown(subList));
+    }, []); */
+
+const calculateMoveUp = itemList => calculateMove(itemList, 'left', 'top', moveUp);
+const calculateMoveRight = itemList => calculateMove(itemList, 'top', 'left', moveRight);
+const calculateMoveLeft = itemList => calculateMove(itemList, 'top', 'left', moveLeft);
+
+const calculateMove = (itemList, pivotMarginName, moveMarginName, moveCallback) => 
+  [...new Array(itemList.length)]
+    .reduce((accumulator, currentValue, i) => {
+      let subList = itemList
+        .filter(item => item.margin[pivotMarginName] === i * size.cell)
+        .sort((
+          {
+            margin: { 
+              [moveMarginName]: marginA 
+            } 
+          }, 
+          {
+            margin: {
+              [moveMarginName]: marginB 
+            }
+          }
+        ) => marginA - marginB);
+      
+      return accumulator.concat(moveCallback(subList));
     }, []);
-  console.log(resultItemList);
-  /* for(let i = 0; i < itemList.length; i++) {
-    let subList = itemList
-      .filter(item => item.margin.left === i * size.cell)
-      .sort(({margin: { top: topA } }, {margin: { top: topB }}) => topA - topB);
-  } */
-}
 
-function moveDown(inputSubList) {
+const moveDown = subList => {
   let resultList = [],
-    { grid: counter, cell} = size;
+    { grid: counter, cell } = size;
 
-  for(let i = inputSubList.length - 1; i >= 0; i--) {
-    let {number, key, margin: {left}} = inputSubList[i];
+  for(let i = subList.length - 1; i >= 0; i--) {
+    let {number, key, margin: {left}} = subList[i];
     resultList.unshift({
       number, 
       key,
@@ -111,87 +112,159 @@ function moveDown(inputSubList) {
   return resultList;
 }
 
-calculateMoveDown([
+const moveRight = subList => {
+  let resultList = [],
+    { grid: counter, cell } = size;
+
+  for(let i = subList.length - 1; i >= 0; i--) {
+    let {number, key, margin: {top}} = subList[i];
+    resultList.unshift({
+      number, 
+      key,
+      margin: { 
+        top,
+        left: counter * cell
+      }
+    });
+    counter--;
+  }
+
+  return resultList;
+}
+
+const moveUp = subList => {
+  let resultList = [],
+    counter = 0,
+    { cell } = size;
+
+  for(let i = 0; i < subList.length; i++) {
+    let {number, key, margin: {left}} = subList[i];
+    resultList.push({
+      number, 
+      key,
+      margin: { 
+        top: counter * cell,
+        left
+      }
+    });
+    counter++;
+  }
+
+  return resultList;
+}
+
+const moveLeft = subList => {
+  let resultList = [],
+    counter = 0,
+    { cell } = size;
+
+  for(let i = 0; i < subList.length; i++) {
+    let {number, key, margin: {top}} = subList[i];
+    resultList.push({
+      number, 
+      key,
+      margin: { 
+        top,
+        left: counter * cell
+      }
+    });
+    counter++;
+  }
+
+  return resultList;
+}
+
+const moveWithIncreaseCounter = (subList, pivotMarginName, moveMarginName) => {
+  let resultList = [],
+    counter = 0,
+    { cell } = size;
+
+  for(let i = 0; i < subList.length; i++) {
+    let {number, key, margin: {[pivotMarginName]: pivotMarginValue}} = subList[i];
+    resultList.push({
+      number, 
+      key,
+      margin: { 
+        [moveMarginName]: counter * cell,
+        [pivotMarginName]: pivotMarginValue
+      }
+    });
+    counter++;
+  }
+
+}
+
+const moveWithDecreaseCounter = (subList, pivotMarginName, moveMarginName) => {
+  let resultList = [],
+    { grid: counter, cell } = size;
+
+  for(let i = subList.length - 1; i >= 0; i--) {
+    let {number, key, margin: {[pivotMarginName]: pivotMarginValue}} = subList[i];
+    resultList.unshift({
+      number, 
+      key,
+      margin: { 
+        [moveMarginName]: counter * cell,
+        [pivotMarginName]: pivotMarginValue
+      }
+    });
+    counter--;
+  }
+
+  return resultList;
+}
+
+const moveDownResult = calculateMoveLeft([
   {
     number: 2,
     key: 2,
-    margin: {
-      top: 200,
-      left: 0
-    },
-  },
-  {
-    number: 2,
-    key: 1,
     margin: {
       top: 0,
       left: 0
     }
   },
   {
-    number: 2,
+    number: 4,
+    key: 4,
+    margin: {
+      top: 0,
+      left: 200
+    }
+  },
+  {
+    number: 4,
     key: 3,
     margin: {
-      top: 300,
+      top: 100,
+      left: 0
+    }
+  },
+  {
+    number: 2,
+    key: 1,
+    margin: {
+      top: 200,
       left: 0
     },
   },
   {
     number: 4,
-    key: 4,
+    key: 5,
     margin: {
-      top: 100,
-      left: 0
+      top: 200,
+      left: 200
+    }
+  },
+  {
+    number: 4,
+    key: 6,
+    margin: {
+      top: 200,
+      left: 300
     }
   }
 ]);
 
-/*
-{
-  number: 2,
-  key: 1,
-  margin: {
-    top: 0,
-    left: 0
-  }
-},
-{
-  number: 2,
-  key: 3,
-  margin: {
-    top: 300,
-    left: 0
-  },
-},
-{
-  number: 4,
-  key: 2,
-  margin: {
-    top: 400,
-    left: 0
-  }
-}
+console.log(moveDownResult);
 
-press key donw
-
-{
-  number: 4,
-  key: 3,
-  margin: {
-    top: 300,
-    left: 0
-  },
-},
-{
-  number: 4,
-  key: 2,
-  margin: {
-    top: 400,
-    left: 0
-  }
-}
-*/
-
-function deepClone(list) {
-  return JSON.parse(JSON.stringify(list));
-}
+const deepClone = list => JSON.parse(JSON.stringify(list));
