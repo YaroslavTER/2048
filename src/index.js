@@ -62,7 +62,7 @@ filter items from the list with equal leftMargin
 calculate next list
 */
 
-const moveDownResult = calculateMoveLeft([
+const moveResult = calculateMoveLeft([
   {
     number: 2,
     key: 2,
@@ -72,12 +72,12 @@ const moveDownResult = calculateMoveLeft([
     }
   },
   {
-    number: 2,
-    key: 1,
+    number: 4,
+    key: 2,
     margin: {
-      top: 200,
-      left: 0
-    },
+      top: 0,
+      left: 200
+    }
   },
   {
     number: 4,
@@ -89,11 +89,19 @@ const moveDownResult = calculateMoveLeft([
   },
   {
     number: 4,
-    key: 4,
+    key: 1,
     margin: {
-      top: 0,
-      left: 200
-    }
+      top: 200,
+      left: 0
+    },
+  },
+  {
+    number: 4,
+    key: 1,
+    margin: {
+      top: 200,
+      left: 0
+    },
   },
   {
     number: 4,
@@ -113,6 +121,6 @@ const moveDownResult = calculateMoveLeft([
   }
 ]);
 
-console.log(moveDownResult);
+console.log(moveResult);
 
 const deepClone = list => JSON.parse(JSON.stringify(list));

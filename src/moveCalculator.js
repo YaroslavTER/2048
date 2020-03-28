@@ -35,19 +35,30 @@ const moveLeft = subList => moveWithIncreaseCounter(subList, 'top', 'left');
 
 const moveWithIncreaseCounter = (subList, pivotMarginName, moveMarginName) => {
   let resultList = [],
-    counter = 0,
-    { cell } = size;
+    { cell } = size,
+    previousItem = {},
+    counter = 0;
 
   for(let i = 0; i < subList.length; i++) {
-    let {number, key, margin: {[pivotMarginName]: pivotMarginValue}} = subList[i];
+    let currentItem = subList[i],
+      {number, key, margin: {[pivotMarginName]: pivotMarginValue}} = currentItem,
+      resultMoveMargin = counter * cell,
+      resultNumber = number;
+
+    if(previousItem.number === number) {
+      resultMoveMargin = (counter - 1) * cell;
+      resultNumber = number * 2;
+    }
+
     resultList.push({
-      number, 
+      number: resultNumber, 
       key,
       margin: { 
-        [moveMarginName]: counter * cell,
+        [moveMarginName]: resultMoveMargin,
         [pivotMarginName]: pivotMarginValue
       }
     });
+    previousItem = subList[i];
     counter++;
   }
 
