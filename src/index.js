@@ -5,7 +5,7 @@ import {
   calculateMoveRight,
   calculateMoveLeft,
   size
-} from './moveCalculator';
+} from './moveCalculator.js';
 
 const boxList = Array.from(document.getElementsByClassName('box'));//generate boxList with two items
 //with random positions
@@ -63,7 +63,7 @@ calculate next list
 */
 
 const moveResult = calculateMoveLeft([
-  {
+  /* {
     number: 2,
     key: 2,
     margin: {
@@ -86,15 +86,7 @@ const moveResult = calculateMoveLeft([
       top: 100,
       left: 0
     }
-  },
-  {
-    number: 4,
-    key: 1,
-    margin: {
-      top: 200,
-      left: 0
-    },
-  },
+  }, */
   {
     number: 4,
     key: 1,
