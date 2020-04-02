@@ -63,7 +63,7 @@ calculate next list
 */
 
 const moveResult = calculateMoveLeft([
-  /* {
+  {
     number: 2,
     key: 2,
     margin: {
@@ -86,7 +86,7 @@ const moveResult = calculateMoveLeft([
       top: 100,
       left: 0
     }
-  }, */
+  },
   {
     number: 4,
     key: 1,
@@ -100,15 +100,7 @@ const moveResult = calculateMoveLeft([
     key: 5,
     margin: {
       top: 200,
-      left: 200
-    }
-  },
-  {
-    number: 4,
-    key: 6,
-    margin: {
-      top: 200,
-      left: 300
+      left: 100
     }
   }
 ]);
