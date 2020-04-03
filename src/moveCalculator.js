@@ -1,12 +1,26 @@
-const calculateMoveDown = itemList => calculateMove(itemList, 'left', 'top', moveDown);
-const calculateMoveUp = itemList => calculateMove(itemList, 'left', 'top', moveUp);
-const calculateMoveRight = itemList => calculateMove(itemList, 'top', 'left', moveRight);
-const calculateMoveLeft = itemList => calculateMove(itemList, 'top', 'left', moveLeft);
 const size = {
   grid: 3,
   cell: 100,
   calculateMoveListLength: 4
 };
+const calculateMoveDown = itemList => calculateMove(itemList, 'left', 'top', moveDown);
+const calculateMoveRight = itemList => calculateMove(itemList, 'top', 'left', moveRight);
+const calculateMoveUp = itemList =>
+  calculateMoveInDirection(itemList, 'top', 'left', moveUp);
+const calculateMoveLeft = itemList => 
+  calculateMoveInDirection(itemList, 'top', 'left', moveLeft);
+
+const calculateMoveInDirection = (
+  itemList, 
+  pivotMarginName,
+  moveMarginName,
+  moveCallback
+) => calculateMove(
+  itemList, 
+  pivotMarginName, 
+  moveMarginName, 
+  subList => moveCallback(subList, pivotMarginName, moveMarginName)
+);
 
 const calculateMove = (itemList, pivotMarginName, moveMarginName, moveCallback) => {
   let {cell, calculateMoveListLength} = size;
@@ -33,54 +47,14 @@ const calculateMove = (itemList, pivotMarginName, moveMarginName, moveCallback) 
 
 const moveDown = subList => moveWithDecreaseCounter(subList, 'left', 'top');
 const moveRight = subList => moveWithDecreaseCounter(subList, 'top', 'left');
-const moveUp = subList => moveWithIncreaseCounter(subList, 'left', 'top');
-const moveLeft = subList => {//pivotMarginName, moveMarginName
-  const resultSubList = moveWithIncreaseCounter(subList, 'top', 'left'),
-    { cell } = size;
-  let joinedList = [];
+const moveUp = (subList, pivotMarginName, moveMarginName) => 
+  increaseCounterCalculations(subList, pivotMarginName, moveMarginName);
+const moveLeft = (subList, pivotMarginName, moveMarginName) => 
+  increaseCounterCalculations(subList, pivotMarginName, moveMarginName);
 
-  for(let i = 0; i < resultSubList.length; i++) {
-    let {number, margin: {top, left}} = resultSubList[i],
-      {number: nextNumber} = resultSubList[i + 1] || {};
-    const resultLeftMargin = calculateResultMargin(
-      joinedList, 
-      cell, 
-      {
-        name: 'left', 
-        value: left
-      }
-    );
-
-    if(nextNumber === number) {
-      joinedList.push({
-        ...resultSubList[i],
-        number: number * 2,
-        margin: {
-          left: resultLeftMargin,
-          top
-        }
-      },
-      {
-        ...resultSubList[i + 1],
-        number: nextNumber,
-        margin: {
-          left: resultLeftMargin,
-          top
-        }
-      });
-      i++;
-    } else {
-      joinedList.push({
-        ...resultSubList[i],
-        number: number,
-        margin: {
-          left: resultLeftMargin,
-          top
-        }
-      });
-    }
-  }
-  return joinedList;
+const increaseCounterCalculations = (subList, pivotMarginName, moveMarginName) => {
+  const resultSubList = moveWithIncreaseCounter(subList, pivotMarginName, moveMarginName);
+  return joinWithIncreaseCounter(resultSubList, pivotMarginName, moveMarginName);
 }
 
 const calculateResultMargin = (joinedList, cell, {name, value}) => {
@@ -132,6 +106,60 @@ const moveWithDecreaseCounter = (subList, pivotMarginName, moveMarginName) => {
   }
 
   return resultList;
+}
+
+const joinWithIncreaseCounter = (subList, pivotMarginName, moveMarginName) => {
+  const { cell } = size;
+  let joinedList = [];
+
+  for(let i = 0; i < subList.length; i++) {
+    let {
+        number, 
+        margin: {
+          [pivotMarginName]: pivotMargin, 
+          [moveMarginName]: moveMargin
+        }
+      } = subList[i],
+      {number: nextNumber} = subList[i + 1] || {};
+    const resultMoveMargin = calculateResultMargin(
+      joinedList, 
+      cell, 
+      {
+        name: moveMarginName, 
+        value: moveMargin
+      }
+    );
+
+    if(nextNumber === number) {
+      joinedList.push({
+        ...subList[i],
+        number: number * 2,
+        margin: {
+          [moveMarginName]: resultMoveMargin,
+          [pivotMarginName]: pivotMargin
+        }
+      },
+      {
+        ...subList[i + 1],
+        number: nextNumber,
+        margin: {
+          [moveMarginName]: resultMoveMargin,
+          [pivotMarginName]: pivotMargin
+        }
+      });
+      i++;
+    } else {
+      joinedList.push({
+        ...subList[i],
+        number: number,
+        margin: {
+          [moveMarginName]: resultMoveMargin,
+          [pivotMarginName]: pivotMargin
+        }
+      });
+    }
+  }
+  return joinedList;
 }
 
 export {
