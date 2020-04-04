@@ -62,7 +62,7 @@ filter items from the list with equal leftMargin
 calculate next list
 */
 
-const moveResult = calculateMoveLeft([
+const moveResult = calculateMoveRight([
   {
     number: 2,
     key: 2,
