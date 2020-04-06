@@ -10,15 +10,55 @@ import {
 const boxList = Array.from(document.getElementsByClassName('box'));//generate boxList with two items
 //with random positions
 let prevTimeList = [...new Array(boxList.length)].map(() => 0);
+const itemList = [
+  {
+    number: 4,
+    key: 1,
+    margin: {
+      top: 200,
+      left: 0
+    },
+  },
+  {
+    number: 2,
+    key: 2,
+    margin: {
+      top: 200,
+      left: 100
+    }
+  },
+  {
+    number: 2,
+    key: 3,
+    margin: {
+      top: 200,
+      left: 200
+    },
+  },
+  {
+    number: 4,
+    key: 4,
+    margin: {
+      top: 200,
+      left: 300
+    }
+  }
+];
 
 document.addEventListener('keydown', ({keyCode, which}) => {
+  const keycode = keyCode ? keyCode : which;
+
+  const moveResult = handleKeyDown(keycode, itemList);
+  console.log(moveResult);
   //handle moves
 
   //render list
 
+  //clean list
+
   boxList.forEach((box, index) => {//change box list based on handleMove calculations
     //it means to update the box list on every move
-    const keycode = keyCode ? keyCode : which,
+    const /* keycode = keyCode ? keyCode : which, */
           startValue = '0px',
           shiftValue = `${size.cell * size.grid}px`,
           currentTime = Date.now(),
@@ -34,7 +74,7 @@ document.addEventListener('keydown', ({keyCode, which}) => {
       box.classList.remove(animationClass);
     }
 
-    switch(keycode) {
+    /* switch(keycode) {
       case(40)://find item from the reuslt list of the calculateMoveDown by the key property
         box.style.marginTop = shiftValue;//value from handleMoveDown for particular box
         //`shitValue` will be result of handleMoveDown for the `box`
@@ -48,63 +88,21 @@ document.addEventListener('keydown', ({keyCode, which}) => {
       case(37):
         box.style.marginLeft = startValue;//handleMoveLeft
         break;
-    }
+    } */
 
     prevTimeList[index] = currentTime;
   });
 });
 
-/* 
-handleMoveUp
-
-filter items from the list with equal leftMargin
-
-calculate next list
-*/
-
-const moveResult = calculateMoveRight([
-  {
-    number: 2,
-    key: 2,
-    margin: {
-      top: 0,
-      left: 0
-    }
-  },
-  {
-    number: 4,
-    key: 2,
-    margin: {
-      top: 0,
-      left: 200
-    }
-  },
-  {
-    number: 4,
-    key: 3,
-    margin: {
-      top: 100,
-      left: 0
-    }
-  },
-  {
-    number: 4,
-    key: 1,
-    margin: {
-      top: 200,
-      left: 0
-    },
-  },
-  {
-    number: 4,
-    key: 5,
-    margin: {
-      top: 200,
-      left: 100
-    }
+const handleKeyDown = (keycode, inputItemList) => {
+  switch(keycode) {
+    case(40):
+      return calculateMoveDown(inputItemList);
+    case(39):
+      return calculateMoveRight(inputItemList);
+    case(38):
+      return calculateMoveUp(inputItemList);
+    case(37):
+      return calculateMoveLeft(inputItemList);
   }
-]);
-
-console.log(moveResult);
-
-const deepClone = list => JSON.parse(JSON.stringify(list));
+}

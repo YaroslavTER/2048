@@ -62,14 +62,33 @@ const moveUp = (subList, pivotMarginName, moveMarginName) =>
 const moveLeft = (subList, pivotMarginName, moveMarginName) => 
   increaseCounterCalculations(subList, pivotMarginName, moveMarginName);
 
-const increaseCounterCalculations = (subList, pivotMarginName, moveMarginName) => {
-  const resultSubList = moveWithIncreaseCounter(subList, pivotMarginName, moveMarginName);
-  return joinWithIncreaseCounter(resultSubList, pivotMarginName, moveMarginName);
-}
+const increaseCounterCalculations = (subList, pivotMarginName, moveMarginName) => 
+  counterCalculations(
+    subList, 
+    pivotMarginName, 
+    moveMarginName, 
+    moveWithIncreaseCounter, 
+    joinWithIncreaseCounter
+  );
 
-const decreaseCounterCalculations = (subList, pivotMarginName, moveMarginName) => {
-  const resultSubList = moveWithDecreaseCounter(subList, pivotMarginName, moveMarginName);
-  return joinWithDecreaseCounter(resultSubList, pivotMarginName, moveMarginName);
+const decreaseCounterCalculations = (subList, pivotMarginName, moveMarginName) => 
+  counterCalculations(
+    subList, 
+    pivotMarginName, 
+    moveMarginName, 
+    moveWithDecreaseCounter, 
+    joinWithDecreaseCounter
+  );
+
+const counterCalculations = (
+  subList, 
+  pivotMarginName, 
+  moveMarginName, 
+  moveCallback, 
+  joinCallback
+) => {
+  const resultSubList = moveCallback(subList, pivotMarginName, moveMarginName);
+  return joinCallback(resultSubList, pivotMarginName, moveMarginName);
 }
 
 const moveWithIncreaseCounter = (subList, pivotMarginName, moveMarginName) => {
@@ -125,7 +144,7 @@ const joinWithIncreaseCounter = (subList, pivotMarginName, moveMarginName) => {
       moveMarginName, 
       true
     );
-    joinedList.concat(pair);
+    joinedList = joinedList.concat(pair);
     i = nextIndex;
   }
   return joinedList;
@@ -143,7 +162,7 @@ const joinWithDecreaseCounter = (subList, pivotMarginName, moveMarginName) => {
       moveMarginName, 
       false
     );
-    joinedList.concat(pair);
+    joinedList = joinedList.concat(pair);
     i = nextIndex;
   }
   return joinedList;
@@ -204,7 +223,7 @@ const joinPair = (i, joinedList, subList, pivotMarginName, moveMarginName, isInc
           }
         }
       ],
-      nextIndex
+      nextIndex: i
     }
   }
 };
@@ -213,14 +232,14 @@ const calculateResultMargin = (joinedList, cell, {name, value}, isIncreaseCounte
   const length = joinedList.length;
   let moveMargin;
 
-  if(isIncreaseCounter && length > 0) {
-    moveMargin = joinedList[length - 1].margin[name]
-  } else if (length > 0) {
-    moveMargin = joinedList[0].margin[name];
+  if(length > 0) {
+    moveMargin = joinedList[length - 1].margin[name];
   }
   
-  if(value -  moveMargin > cell) {
+  if(isIncreaseCounter && value - moveMargin > cell) {
     return value > 0 ? value - cell : value;
+  } else if(!isIncreaseCounter && moveMargin - value > cell) {
+    return moveMargin > 0 ? moveMargin - cell : moveMargin;
   } else {
     return value;
   }
