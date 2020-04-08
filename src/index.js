@@ -1,23 +1,24 @@
-import './style.css';
+import './style.scss';
 import {
   calculateMoveDown,
   calculateMoveUp,
   calculateMoveRight,
   calculateMoveLeft,
   size
-} from './moveCalculator.js';
+} from './moveCalculator';
+import { renderItemList } from './render';
 
 const boxList = Array.from(document.getElementsByClassName('box'));//generate boxList with two items
 //with random positions
 let prevTimeList = [...new Array(boxList.length)].map(() => 0);
 const itemList = [
   {
-    number: 4,
+    number: 2,
     key: 1,
     margin: {
       top: 200,
       left: 0
-    },
+    }
   },
   {
     number: 2,
@@ -44,6 +45,8 @@ const itemList = [
     }
   }
 ];
+
+renderItemList(itemList);
 
 document.addEventListener('keydown', ({keyCode, which}) => {
   const keycode = keyCode ? keyCode : which;

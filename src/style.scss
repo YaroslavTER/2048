@@ -1,0 +1,12 @@
+.box {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  background-color: gray;
+
+  &__animation {
+    transition: margin 0.5s cubic-bezier(0, .7, 0, 1);
+  }
+}
+
+  

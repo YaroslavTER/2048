@@ -20,5 +20,8 @@
   "homepage": "https://github.com/YaroslavTER/2048#readme",
   "dependencies": {
     "parcel-bundler": "^1.12.4"
+  },
+  "devDependencies": {
+    "sass": "^1.26.3"
   }
 }
