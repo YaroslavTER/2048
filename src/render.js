@@ -3,10 +3,9 @@ const renderItemList = (itemList) => {
   let zIndexCounter = 0;
 
   clearChildElements(container);
-  itemList.forEach((item) => {
-    createBox(item, container, zIndexCounter);
-    zIndexCounter--;
-  })
+  itemList.forEach((item) => 
+    createBox(item, container, zIndexCounter--)
+  );
 }
 
 const clearChildElements = (domElement) => {
@@ -18,7 +17,7 @@ const clearChildElements = (domElement) => {
 const createBox = ({number, key, margin: {top, left}}, container, zIndex) => {
   const box = document.createElement('div');
   box.innerText = number;
-  box.setAttribute('class', 'box');
+  box.setAttribute('class', 'box box__animation');
   box.setAttribute('data-key', key);
   appendChildStyle(box, `
     .box[data-key="${key}"] { 
@@ -44,14 +43,27 @@ const appendChildStyle = (createdElement, styleText) => {
   createdElement.appendChild(css);
 }
 
-const updateBoxList = () => {
+const updateRenderredItemList = (itemList) => {
+  let zIndeCounter = 0;
 
+  itemList.forEach(item => updateBox(item, zIndeCounter--));
 }
 
-const updateBox = ({number, key, margin: {top, left}}) => {
+const updateBox = ({number, key, margin: {top, left}}, zIndex) => {
+  const boxSelector = `.box[data-key="${key}"]`,
+    box = document.querySelector(boxSelector);
 
+  clearChildElements(box);
+  box.innerText = number;
+  appendChildStyle(box, `
+    ${boxSelector} { 
+      margin-top: ${top}px; 
+      margin-left: ${left}px;
+      z-index: ${zIndex};
+    }`);
 }
 
 export {
-  renderItemList
+  renderItemList,
+  updateRenderredItemList
 };

@@ -6,7 +6,10 @@ import {
   calculateMoveLeft,
   size
 } from './moveCalculator';
-import { renderItemList } from './render';
+import { 
+  renderItemList, 
+  updateRenderredItemList 
+} from './render';
 
 const boxList = Array.from(document.getElementsByClassName('box'));//generate boxList with two items
 //with random positions
@@ -54,7 +57,7 @@ document.addEventListener('keydown', ({keyCode, which}) => {
   const moveResult = handleKeyDown(keycode, itemList);
   console.log(moveResult);
   //handle moves
-
+  updateRenderredItemList(moveResult);
   //render list
 
   //clean list
