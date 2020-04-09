@@ -20,7 +20,7 @@ const createBox = ({number, key, margin: {top, left}}, container, zIndex) => {
   box.setAttribute('class', 'box box__animation');
   box.setAttribute('data-key', key);
   appendChildStyle(box, `
-    .box[data-key="${key}"] { 
+    ${getBoxSelector(key)} { 
       margin-top: ${top}px; 
       margin-left: ${left}px;
       z-index: ${zIndex};
@@ -50,7 +50,7 @@ const updateRenderredItemList = (itemList) => {
 }
 
 const updateBox = ({number, key, margin: {top, left}}, zIndex) => {
-  const boxSelector = `.box[data-key="${key}"]`,
+  const boxSelector = getBoxSelector(key),
     box = document.querySelector(boxSelector);
 
   clearChildElements(box);
@@ -63,7 +63,23 @@ const updateBox = ({number, key, margin: {top, left}}, zIndex) => {
     }`);
 }
 
+const removeBoxList = (itemList) => {
+  return itemList.filter((item) => {
+    const {key, needToRemove} = item;
+
+    if(needToRemove) {
+      const box = document.querySelector(getBoxSelector(key));
+      box.remove();
+    } else {
+      return item;
+    }
+  });
+}
+
+const getBoxSelector = (key) => `.box[data-key="${key}"]`;
+
 export {
   renderItemList,
-  updateRenderredItemList
+  updateRenderredItemList,
+  removeBoxList
 };

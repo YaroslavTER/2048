@@ -3,8 +3,9 @@ const size = {
   cell: 100,
   calculateMoveListLength: 4
 };
+
 const calculateMoveDown = itemList => 
-calculateMoveInDirection(itemList, 'top', 'left', moveDown);
+  calculateMoveInDirection(itemList, 'left', 'top', moveDown);
 
 const calculateMoveRight = itemList => 
   calculateMoveInDirection(itemList, 'top', 'left', moveRight);
@@ -51,7 +52,7 @@ const calculateMove = (itemList, pivotMarginName, moveMarginName, moveCallback) 
 }
 
 const moveDown = (subList, pivotMarginName, moveMarginName) => 
-  moveWithDecreaseCounter(subList, pivotMarginName, moveMarginName);
+  decreaseCounterCalculations(subList, pivotMarginName, moveMarginName);
 
 const moveRight = (subList, pivotMarginName, moveMarginName) => 
   decreaseCounterCalculations(subList, pivotMarginName, moveMarginName);
@@ -203,6 +204,7 @@ const joinPair = (i, joinedList, subList, pivotMarginName, moveMarginName, isInc
         {
           ...subList[nextIndex],
           number: nextNumber,
+          needToRemove: true,
           margin: {
             [moveMarginName]: resultMoveMargin,
             [pivotMarginName]: pivotMargin
