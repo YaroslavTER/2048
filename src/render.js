@@ -1,3 +1,46 @@
+import {size} from './moveCalculator';
+import {getKey} from './keyGenerator';
+
+const generateBoxList = (itemList, numberOfItems) => {  
+  for(let i = 0; i < numberOfItems; i++) {
+    itemList.push(generateBox(itemList));
+  }
+
+  return itemList;
+}
+
+const generateBox = (itemList) => {
+  let top,
+    left;
+
+  do {
+    top = randomMarginInRange();
+    left = randomMarginInRange();
+  } while(areMarginsColide(top, left, itemList));
+
+  return {
+    number: randomInRange(1, 2) * 2,
+    key: getKey(),
+    margin: {
+      top,
+      left
+    }
+  };
+}
+
+const randomMarginInRange = () => {
+  const {grid, cell} = size;
+  return randomInRange(0, grid) * cell;
+}
+
+const randomInRange = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+
+const areMarginsColide = (inputTop, inputLeft, itemList) =>
+  itemList.some(({margin: {top, left}}) => 
+    top === inputTop && left === inputLeft
+  );
+
 const renderItemList = (itemList) => {
   const container = document.getElementsByClassName('container')[0];
   let zIndexCounter = 0;
@@ -81,5 +124,7 @@ const getBoxSelector = (key) => `.box[data-key="${key}"]`;
 export {
   renderItemList,
   updateRenderredItemList,
-  removeBoxList
+  removeBoxList,
+  generateBoxList,
+  randomInRange
 };
