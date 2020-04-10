@@ -1,5 +1,6 @@
 import {size} from './moveCalculator';
 import {getKey} from './keyGenerator';
+import {moveBoxAnimation} from './animation';
 
 const generateBoxList = (itemList, numberOfItems) => {  
   for(let i = 0; i < numberOfItems; i++) {
@@ -57,17 +58,19 @@ const clearChildElements = (domElement) => {
   }
 }
 
-const createBox = ({number, key, margin: {top, left}}, container, zIndex) => {
+const createBox = ({number, key, margin}, container, zIndex) => {
   const box = document.createElement('div');
   box.innerText = number;
   box.setAttribute('class', 'box box__animation');
   box.setAttribute('data-key', key);
-  appendChildStyle(box, `
-    ${getBoxSelector(key)} { 
-      margin-top: ${top}px; 
-      margin-left: ${left}px;
-      z-index: ${zIndex};
-    }`);
+  appendChildStyle(
+    box, 
+    getBoxStyle(
+      getBoxSelector(key), 
+      margin, 
+      zIndex
+    )
+  );
   container.appendChild(box);
 }
 
@@ -92,19 +95,21 @@ const updateRenderredItemList = (itemList) => {
   itemList.forEach(item => updateBox(item, zIndeCounter--));
 }
 
-const updateBox = ({number, key, margin: {top, left}}, zIndex) => {
+const updateBox = ({number, key, margin}, zIndex) => {
   const boxSelector = getBoxSelector(key),
     box = document.querySelector(boxSelector);
 
   clearChildElements(box);
   box.innerText = number;
-  appendChildStyle(box, `
-    ${boxSelector} { 
-      margin-top: ${top}px; 
-      margin-left: ${left}px;
-      z-index: ${zIndex};
-    }`);
+  appendChildStyle(box, getBoxStyle(boxSelector, margin, zIndex));
 }
+
+const getBoxStyle = (boxSelector, {top, left}, zIndex) => 
+  `${boxSelector} { 
+    margin-top: ${top}px; 
+    margin-left: ${left}px;
+    z-index: ${zIndex};
+  }`
 
 const removeBoxList = (itemList) => {
   return itemList.filter((item) => {
