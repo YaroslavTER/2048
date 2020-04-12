@@ -1,4 +1,5 @@
 const getMargin = (progress, value) => progress * value;
+//(newMargin - currentMargin) * progress
 
 const animate = ({timing, draw, duration}) => {
   let start = performance.now();
