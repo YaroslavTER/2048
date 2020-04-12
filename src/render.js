@@ -1,6 +1,9 @@
 import {size} from './moveCalculator';
 import {getKey} from './keyGenerator';
-import {moveBoxAnimation} from './animation';
+import {
+  animate,
+  getMargin
+} from './animation';
 
 const generateBoxList = (itemList, numberOfItems) => {  
   for(let i = 0; i < numberOfItems; i++) {
@@ -61,7 +64,7 @@ const clearChildElements = (domElement) => {
 const createBox = ({number, key, margin}, container, zIndex) => {
   const box = document.createElement('div');
   box.innerText = number;
-  box.setAttribute('class', 'box box__animation');
+  box.setAttribute('class', 'box');
   box.setAttribute('data-key', key);
   appendChildStyle(
     box, 
@@ -98,11 +101,32 @@ const updateRenderredItemList = (itemList) => {
 const updateBox = ({number, key, margin}, zIndex) => {
   const boxSelector = getBoxSelector(key),
     box = document.querySelector(boxSelector);
-
-  clearChildElements(box);
-  box.innerText = number;
-  appendChildStyle(box, getBoxStyle(boxSelector, margin, zIndex));
+  moveBoxAnimation(box, boxSelector, number, margin, zIndex, 0.2);
 }
+
+const moveBoxAnimation = (box, boxSelector, number, {top, left}, zIndex, msDuration) => {
+  animate({
+    timing: linear,
+    draw(progress) {
+      clearChildElements(box);
+      box.innerText = number;
+      appendChildStyle(
+        box, 
+        getBoxStyle(
+          boxSelector, 
+          {
+            top: getMargin(progress, top),
+            left: getMargin(progress, left)
+          },
+          zIndex
+        )
+      );
+    },
+    duration: msDuration * 1000
+  });
+};
+
+const linear = (timeFraction) => timeFraction;
 
 const getBoxStyle = (boxSelector, {top, left}, zIndex) => 
   `${boxSelector} { 
