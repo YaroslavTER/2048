@@ -1,6 +1,3 @@
-const getMargin = (progress, prevValue, value) => 
-  prevValue + (value - prevValue) * progress;
-
 const animate = ({timing, draw, duration}) => {
   let start = performance.now();
   requestAnimationFrame(function animate(time) {
@@ -23,7 +20,13 @@ const animate = ({timing, draw, duration}) => {
   });
 }
 
+const getMargin = (progress, prevValue, value) => 
+  prevValue + (value - prevValue) * progress;
+
+const linear = (timeFraction) => timeFraction;
+
 export {
   animate,
-  getMargin
+  getMargin,
+  linear
 };

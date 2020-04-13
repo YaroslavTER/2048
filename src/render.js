@@ -2,7 +2,8 @@ import {size} from './moveCalculator';
 import {getKey} from './keyGenerator';
 import {
   animate,
-  getMargin
+  getMargin,
+  linear
 } from './animation';
 
 const generateBoxList = (itemList, numberOfItems) => {  
@@ -140,8 +141,6 @@ const moveBoxAnimation = (
     duration: msDuration * 1000
   });
 };
-
-const linear = (timeFraction) => timeFraction;
 
 const getBoxStyle = (boxSelector, {top, left}, zIndex) => 
   `${boxSelector} { 
