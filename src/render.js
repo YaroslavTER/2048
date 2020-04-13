@@ -92,31 +92,46 @@ const appendChildStyle = (createdElement, styleText) => {
   createdElement.appendChild(css);
 }
 
-const updateRenderredItemList = (itemList) => {
+const updateRenderredItemList = (itemList, prevList) => {
   let zIndeCounter = 0;
 
-  itemList.forEach(item => updateBox(item, zIndeCounter--));
+  itemList.forEach(item => {
+    const {key: currentItemKey} = item;
+    const {margin: prevMargin} = prevList.filter(({key}) => key === currentItemKey)[0];
+    //if there is not such item with prev key then render item list
+    //and don't update it
+    updateBox(item, prevMargin, zIndeCounter--)
+  });
 }
 
-const updateBox = ({number, key, margin}, zIndex) => {
+const updateBox = ({number, key, margin}, prevMargin, zIndex) => {
   const boxSelector = getBoxSelector(key),
-    box = document.querySelector(boxSelector);
-  moveBoxAnimation(box, boxSelector, number, margin, zIndex, 0.2);
+  box = document.querySelector(boxSelector);
+  moveBoxAnimation(box, boxSelector, number, margin, prevMargin, zIndex, 0.1);
 }
 
-const moveBoxAnimation = (box, boxSelector, number, {top, left}, zIndex, msDuration) => {
+const moveBoxAnimation = (
+  box, 
+  boxSelector, 
+  number, 
+  {top, left}, 
+  {top: prevTop, left: prevLeft}, 
+  zIndex, 
+  msDuration
+) => {
   animate({
     timing: linear,
     draw(progress) {
       clearChildElements(box);
       box.innerText = number;
+
       appendChildStyle(
         box, 
         getBoxStyle(
           boxSelector, 
           {
-            top: getMargin(progress, top),
-            left: getMargin(progress, left)
+            top: getMargin(progress, prevTop, top),
+            left: getMargin(progress, prevLeft, left)
           },
           zIndex
         )

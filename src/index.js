@@ -17,10 +17,12 @@ renderItemList(itemList);
 document.addEventListener('keydown', ({keyCode, which}) => {
   const keycode = keyCode ? keyCode : which,
     {length} = itemList;
+  let prevList = [];
 
   if(length) {
+    prevList = itemList;
     itemList = handleKeyDown(keycode, itemList);
-    updateRenderredItemList(itemList);
+    updateRenderredItemList(itemList, prevList);
     itemList = removeBoxList(itemList);
   }
 });
