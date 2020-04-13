@@ -7,7 +7,8 @@ import {
   randomInRange
 } from './render';
 import {
-  handleKeyDown
+  handleKeyDown,
+  isValidKey
 } from './handleKeyDown';
 
 let itemList = generateBoxList([], randomInRange(1, 2));
@@ -15,14 +16,17 @@ let itemList = generateBoxList([], randomInRange(1, 2));
 renderItemList(itemList);
 
 document.addEventListener('keydown', ({keyCode, which}) => {
-  const keycode = keyCode ? keyCode : which,
-    {length} = itemList;
-  let prevList = [];
+  const keycode = keyCode ? keyCode : which;
+  
+  if(isValidKey(keycode)) {
+    const {length} = itemList;
+    let prevList = [];
 
-  if(length) {
-    prevList = itemList;
-    itemList = handleKeyDown(keycode, itemList);
-    updateRenderredItemList(itemList, prevList);
-    itemList = removeBoxList(itemList);
+    if(length) {
+      prevList = itemList;
+      itemList = handleKeyDown(keycode, itemList);
+      updateRenderredItemList(itemList, prevList);
+      itemList = removeBoxList(itemList);
+    }
   }
 });

@@ -13,17 +13,15 @@ const validKeySet = {
 }
 
 const handleKeyDown = (keycode, inputItemList) => {
-  if(isValidKey(keycode)) {
-    switch(keycode) {
-      case(40):
-        return calculateMoveDown(inputItemList);
-      case(39):
-        return calculateMoveRight(inputItemList);
-      case(38):
-        return calculateMoveUp(inputItemList);
-      case(37):
-        return calculateMoveLeft(inputItemList);
-    }
+  switch(keycode) {
+    case(40):
+      return calculateMoveDown(inputItemList);
+    case(39):
+      return calculateMoveRight(inputItemList);
+    case(38):
+      return calculateMoveUp(inputItemList);
+    case(37):
+      return calculateMoveLeft(inputItemList);
   }
 }
 
@@ -33,5 +31,6 @@ const isValidKey = (inputKey) => {
 }
 
 export {
-  handleKeyDown
+  handleKeyDown,
+  isValidKey
 }

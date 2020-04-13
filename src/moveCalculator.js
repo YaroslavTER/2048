@@ -239,13 +239,15 @@ const calculateResultMargin = (joinedList, cell, {name, value}, isIncreaseCounte
   }
   
   if(isIncreaseCounter && value - moveMargin > cell) {
-    return value > 0 ? value - cell : value;
+    return getMargin(value, cell);
   } else if(!isIncreaseCounter && moveMargin - value > cell) {
-    return moveMargin > 0 ? moveMargin - cell : moveMargin;
+    return getMargin(moveMargin, cell);
   } else {
     return value;
   }
 }
+
+const getMargin = (value, cell) => value > 0 ? value - cell : value;
 
 export {
   calculateMoveDown,
