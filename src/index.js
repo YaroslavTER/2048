@@ -10,6 +10,10 @@ import {
   handleKeyDown,
   isValidKey
 } from './handleKeyDown';
+import {
+  someOfMarginsChanged,
+  isItemListFull,
+} from './moveCalculator';
 
 let itemList = generateBoxList([], randomInRange(1, 2));
 
@@ -17,16 +21,25 @@ renderItemList(itemList);
 
 document.addEventListener('keydown', ({keyCode, which}) => {
   const keycode = keyCode ? keyCode : which;
-  
+    
   if(isValidKey(keycode)) {
     const {length} = itemList;
-    let prevList = [];
+    let prevList = [],
+      someOfMarginsChangedValue;
 
     if(length) {
       prevList = itemList;
       itemList = handleKeyDown(keycode, itemList);
+      someOfMarginsChangedValue = someOfMarginsChanged(itemList, prevList);
+      if(someOfMarginsChangedValue) {
+        itemList = generateBoxList(itemList, 1);
+      } else if(!someOfMarginsChangedValue && isItemListFull(itemList)) {
+        console.log('game over');
+      }
       updateRenderredItemList(itemList, prevList);
-      itemList = removeBoxList(itemList);
+      setTimeout(function() {
+        itemList = removeBoxList(itemList);
+      }, 95);
     }
   }
 });

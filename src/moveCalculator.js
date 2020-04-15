@@ -169,7 +169,14 @@ const joinWithDecreaseCounter = (subList, pivotMarginName, moveMarginName) => {
   return joinedList;
 }
 
-const joinPair = (i, joinedList, subList, pivotMarginName, moveMarginName, isIncreaseCounter) => {
+const joinPair = (
+  i, 
+  joinedList, 
+  subList, 
+  pivotMarginName, 
+  moveMarginName, 
+  isIncreaseCounter
+) => {
   let {
       number, 
       margin: {
@@ -249,10 +256,22 @@ const calculateResultMargin = (joinedList, cell, {name, value}, isIncreaseCounte
 
 const getMargin = (value, cell) => value > 0 ? value - cell : value;
 
+const someOfMarginsChanged = (itemList, prevList) => {
+  return itemList.some(({key, margin: {top, left}}) => {
+    const {margin: {top: prevTop, left: prevLeft}} = 
+      prevList.filter(({key: prevKey}) => prevKey === key)[0];
+    return top !== prevTop || left !== prevLeft;
+  })
+}
+
+const isItemListFull = (itemList) => Math.pow(size.grid + 1, 2) === itemList.length;
+
 export {
   calculateMoveDown,
   calculateMoveUp,
   calculateMoveRight,
   calculateMoveLeft,
+  someOfMarginsChanged,
+  isItemListFull,
   size
 };

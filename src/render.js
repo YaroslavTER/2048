@@ -57,8 +57,10 @@ const renderItemList = (itemList) => {
 }
 
 const clearChildElements = (domElement) => {
-  while(domElement.firstChild) {
-    domElement.removeChild(domElement.lastChild);
+  if(domElement) {
+    while(domElement.firstChild) {
+      domElement.removeChild(domElement.lastChild);
+    }
   }
 }
 
@@ -94,14 +96,19 @@ const appendChildStyle = (createdElement, styleText) => {
 }
 
 const updateRenderredItemList = (itemList, prevList) => {
-  let zIndeCounter = 0;
+  let zIndexCounter = 0;
 
   itemList.forEach(item => {
     const {key: currentItemKey} = item;
-    const {margin: prevMargin} = prevList.filter(({key}) => key === currentItemKey)[0];
-    //if there is not such item with prev key then render item list
-    //and don't update it
-    updateBox(item, prevMargin, zIndeCounter--)
+    const prevItem = prevList.filter(({key}) => key === currentItemKey)[0];
+    const {margin: prevMargin} = prevItem || {margin:{}};
+    updateBox(item, prevMargin, zIndexCounter--);
+    if(!prevItem) {
+      setTimeout(function() {
+        const container = document.getElementsByClassName('container')[0];
+        createBox(item, container, zIndexCounter--);
+      }, 0);
+    }
   });
 }
 
@@ -123,20 +130,22 @@ const moveBoxAnimation = (
   animate({
     timing: linear,
     draw(progress) {
-      clearChildElements(box);
-      box.innerText = number;
+      if(box) {
+        clearChildElements(box);
+        box.innerText = number;
 
-      appendChildStyle(
-        box, 
-        getBoxStyle(
-          boxSelector, 
-          {
-            top: getMargin(progress, prevTop, top),
-            left: getMargin(progress, prevLeft, left)
-          },
-          zIndex
-        )
-      );
+        appendChildStyle(
+          box, 
+          getBoxStyle(
+            boxSelector, 
+            {
+              top: getMargin(progress, prevTop, top),
+              left: getMargin(progress, prevLeft, left)
+            },
+            zIndex
+          )
+        );
+      }
     },
     duration: msDuration * 1000
   });
