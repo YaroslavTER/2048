@@ -127,7 +127,7 @@ const moveBoxAnimation = (
   zIndex, 
   msDuration
 ) => {
-  animate({
+  animate({//remove items
     timing: linear,
     draw(progress) {
       if(box) {
