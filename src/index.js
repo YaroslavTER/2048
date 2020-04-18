@@ -37,9 +37,7 @@ function eventHandler({keyCode, which}) {
       if(someOfMarginsChangedValue) {
         itemList = generateBoxList(itemList, 1);
       } else if(!someOfMarginsChangedValue && isItemListFull(itemList)) {
-        console.log(itemList.filter(({needToRemove}) => needToRemove));
         if(dontHaveAnyMoves(itemList)) {
-          console.log('game over');
           document.removeEventListener('keydown', eventHandler);
         }
       }

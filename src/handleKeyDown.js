@@ -42,7 +42,7 @@ const compareItemLists = (aItemList, bItemList) => {
 
   for(let i = 0; i < aLength; i++) {
     for(let j = 0; j < bLength; j++) {
-      if(!areItemsEqual(aItemList[i], bItemList[i])) {
+      if(!areItemsEqual(aItemList[i], bItemList[j])) {
         return false;
       }
     }
