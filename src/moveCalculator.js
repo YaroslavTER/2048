@@ -33,7 +33,8 @@ const calculateMove = (itemList, pivotMarginName, moveMarginName, moveCallback) 
   return [...new Array(calculateMoveListLength)]
     .reduce((accumulator, currentValue, i) => {
       let subList = itemList
-        .filter(item => item.margin[pivotMarginName] === i * cell)
+        .filter(({margin:{ [pivotMarginName]: pivotMarginValue }, needToRemove}) => 
+          pivotMarginValue === i * cell && !needToRemove)
         .sort((
           {
             margin: { 
@@ -47,6 +48,9 @@ const calculateMove = (itemList, pivotMarginName, moveMarginName, moveCallback) 
           }
         ) => marginA - marginB);
       
+      if(subList.length > 4) {
+        console.log(subList);
+      }
       return accumulator.concat(moveCallback(subList));
     }, []);
 }

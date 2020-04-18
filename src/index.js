@@ -8,7 +8,8 @@ import {
 } from './render';
 import {
   handleKeyDown,
-  isValidKey
+  isValidKey,
+  dontHaveAnyMoves
 } from './handleKeyDown';
 import {
   someOfMarginsChanged,
@@ -19,7 +20,9 @@ let itemList = generateBoxList([], randomInRange(1, 2));
 
 renderItemList(itemList);
 
-document.addEventListener('keydown', ({keyCode, which}) => {
+document.addEventListener('keydown', eventHandler, true);
+
+function eventHandler({keyCode, which}) {
   const keycode = keyCode ? keyCode : which;
     
   if(isValidKey(keycode)) {
@@ -34,7 +37,11 @@ document.addEventListener('keydown', ({keyCode, which}) => {
       if(someOfMarginsChangedValue) {
         itemList = generateBoxList(itemList, 1);
       } else if(!someOfMarginsChangedValue && isItemListFull(itemList)) {
-        console.log('game over');
+        console.log(itemList.filter(({needToRemove}) => needToRemove));
+        if(dontHaveAnyMoves(itemList)) {
+          console.log('game over');
+          document.removeEventListener('keydown', eventHandler);
+        }
       }
       updateRenderredItemList(itemList, prevList);
       setTimeout(function() {
@@ -42,4 +49,4 @@ document.addEventListener('keydown', ({keyCode, which}) => {
       }, 95);
     }
   }
-});
+}
