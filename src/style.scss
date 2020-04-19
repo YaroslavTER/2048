@@ -1,18 +1,45 @@
 .container {
-  width: 400px;
-  height: 400px;
-  border: 1px solid black;
-}
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 429px;
+  height: 431px;
 
-.box {
-  height: 100px;
-  width: 100px;
-  position: absolute;
-  background-color: gray;
+  .box {
 
-  &__animation {
-    transition: margin 0.2s;
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    border-radius: 5px;
+    background-color: #eee4da;
+  
+    &__animation {
+      transition: margin 1s;
+    }
   }
 }
 
+.wrapper {
+  
+  width: 431px;
+  display: grid;
+  grid-gap: 10px;
+  margin-left: 10px;
+  margin-top: -431px;
+  grid-template-columns: repeat(6, 100px);
+  grid-template-rows: 100px 100px 100px 100px;
+  grid-auto-flow: column;
+  background-color: #bbada0;
+  position: absolute;
+  z-index: -2;
+
+  .place {
+    
+    background-color: #757575;
+    color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    font-size: 150%;
+    position: relative;
+  }
+}
   

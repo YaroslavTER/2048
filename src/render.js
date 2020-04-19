@@ -52,7 +52,7 @@ const renderItemList = (itemList) => {
 
   clearChildElements(container);
   itemList.forEach((item) => 
-    createBox(item, container, zIndexCounter--)
+    createBox(item, container, zIndexCounter++)
   );
 }
 
@@ -102,11 +102,11 @@ const updateRenderredItemList = (itemList, prevList) => {
     const {key: currentItemKey} = item;
     const prevItem = prevList.filter(({key}) => key === currentItemKey)[0];
     const {margin: prevMargin} = prevItem || {margin:{}};
-    updateBox(item, prevMargin, zIndexCounter--);
+    updateBox(item, prevMargin, zIndexCounter++);
     if(!prevItem) {
       setTimeout(function() {
         const container = document.getElementsByClassName('container')[0];
-        createBox(item, container, zIndexCounter--);
+        createBox(item, container, zIndexCounter++);
       }, 0);
     }
   });

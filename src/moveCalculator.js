@@ -1,6 +1,6 @@
 const size = {
   grid: 3,
-  cell: 100,
+  cell: 110,
   calculateMoveListLength: 4
 };
 
@@ -205,17 +205,17 @@ const joinPair = (
     return {
       pair: [
         {
-          ...subList[i],
-          number: number * 2,
+          ...subList[nextIndex],
+          number: nextNumber,
+          needToRemove: true,
           margin: {
             [moveMarginName]: resultMoveMargin,
             [pivotMarginName]: pivotMargin
           }
         },
         {
-          ...subList[nextIndex],
-          number: nextNumber,
-          needToRemove: true,
+          ...subList[i],
+          number: number * 2,
           margin: {
             [moveMarginName]: resultMoveMargin,
             [pivotMarginName]: pivotMargin
