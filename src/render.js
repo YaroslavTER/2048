@@ -153,22 +153,41 @@ const moveBoxAnimation = (
 
 const getBoxStyle = (boxSelector, {top, left}, zIndex) => 
   `${boxSelector} { 
-    margin-top: ${top}px; 
+    margin-top: ${top}px;
     margin-left: ${left}px;
     z-index: ${zIndex};
-  }`
+    animation: createBox .25s;
+  }`;
 
 const removeBoxList = (itemList) => {
   return itemList.filter((item) => {
     const {key, needToRemove} = item;
-
     if(needToRemove) {
+      bounceBox(itemList, item);
       const box = document.querySelector(getBoxSelector(key));
       box.remove();
     } else {
       return item;
     }
   });
+}
+
+const bounceBox = (itemList, {margin: {top, left}}) => {
+  const {key} = itemList.filter(
+    ({
+      margin: {
+        top: currentTop, 
+        left: currentLeft
+      }, 
+      needToRemove
+    }) =>
+      currentTop === top && currentLeft === left && !needToRemove
+    )[0],
+    box = document.querySelector(getBoxSelector(key)),
+    bounceClassName = 'bounce';
+  box.classList.remove(bounceClassName);
+  void box.offsetWidth;
+  box.classList.add(bounceClassName);
 }
 
 const getBoxSelector = (key) => `.box[data-key="${key}"]`;

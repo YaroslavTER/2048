@@ -9,7 +9,7 @@
     height: 100px;
     width: 100px;
     position: absolute;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: #eee4da;
   
     &__animation {
@@ -36,10 +36,31 @@
     
     background-color: #757575;
     color: #fff;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 20px;
-    font-size: 150%;
     position: relative;
+  }
+}
+
+.bounce {
+  animation: bounceBox .25s !important;
+}
+
+@keyframes createBox {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes bounceBox {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
   }
 }
   
