@@ -1,6 +1,7 @@
 .container {
   margin-left: 10px;
-  margin-top: 10px;
+  margin-top: 20px;
+  margin-bottom: -10px;
   width: 429px;
   height: 431px;
 
@@ -9,7 +10,14 @@
     height: 100px;
     width: 100px;
     position: absolute;
-    border-radius: 10px;
+    border-radius: 3px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 100px;
+    font-size: 40px;
+    font-weight: bolder;
+    font-family: "Gill Sans", sans-serif;
+    color: #776e65;
     background-color: #eee4da;
   
     &__animation {
@@ -19,13 +27,14 @@
 }
 
 .wrapper {
-  
-  width: 431px;
+  width: 430px;
+  height: 430px;
   display: grid;
   grid-gap: 10px;
-  margin-left: 10px;
+  padding: 10px;
   margin-top: -431px;
-  grid-template-columns: repeat(6, 100px);
+  border-radius: 3px;
+  grid-template-columns: repeat(4, 100px);
   grid-template-rows: 100px 100px 100px 100px;
   grid-auto-flow: column;
   background-color: #bbada0;
@@ -34,9 +43,9 @@
 
   .place {
     
-    background-color: #757575;
+    background-color: #cdc1b4;
     color: #fff;
-    border-radius: 10px;
+    border-radius: 3px;
     padding: 20px;
     position: relative;
   }
