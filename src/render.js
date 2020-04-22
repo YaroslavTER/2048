@@ -6,12 +6,12 @@ import {
   linear
 } from './animation';
 
-const generateBoxList = (itemList, numberOfItems) => {  
+const generateBoxList = (itemList, numberOfItems) => {
+  const list = JSON.parse(JSON.stringify(itemList));
   for(let i = 0; i < numberOfItems; i++) {
-    itemList.push(generateBox(itemList));
+    list.push(generateBox(list));
   }
-
-  return itemList;
+  return list;
 }
 
 const generateBox = (itemList) => {
@@ -67,7 +67,7 @@ const clearChildElements = (domElement) => {
 const createBox = ({number, key, margin}, container, zIndex) => {
   const box = document.createElement('div');
   box.innerText = number;
-  box.setAttribute('class', 'box');
+  box.setAttribute('class', `box value-${number}`);
   box.setAttribute('data-key', key);
   appendChildStyle(
     box, 
@@ -151,14 +151,6 @@ const moveBoxAnimation = (
   });
 };
 
-const getBoxStyle = (boxSelector, {top, left}, zIndex) => 
-  `${boxSelector} { 
-    margin-top: ${top}px;
-    margin-left: ${left}px;
-    z-index: ${zIndex};
-    animation: createBox .25s;
-  }`;
-
 const removeBoxList = (itemList) => {
   return itemList.filter((item) => {
     const {key, needToRemove} = item;
@@ -173,7 +165,7 @@ const removeBoxList = (itemList) => {
 }
 
 const bounceBox = (itemList, {margin: {top, left}}) => {
-  const {key} = itemList.filter(
+  const {number, key} = itemList.filter(
     ({
       margin: {
         top: currentTop, 
@@ -185,12 +177,21 @@ const bounceBox = (itemList, {margin: {top, left}}) => {
     )[0],
     box = document.querySelector(getBoxSelector(key)),
     bounceClassName = 'bounce';
+
   box.classList.remove(bounceClassName);
   void box.offsetWidth;
-  box.classList.add(bounceClassName);
+  box.classList.add(bounceClassName, `value-${number}`);
 }
 
 const getBoxSelector = (key) => `.box[data-key="${key}"]`;
+
+const getBoxStyle = (boxSelector, {top, left}, zIndex) => 
+  `${boxSelector} { 
+    margin-top: ${top}px;
+    margin-left: ${left}px;
+    z-index: ${zIndex};
+    animation: createBox .25s;
+  }`;
 
 export {
   renderItemList,
