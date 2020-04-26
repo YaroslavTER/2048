@@ -3,11 +3,118 @@ $container-height: 430px;
 $container-width: 430px;
 $box-height: 100px;
 $box-width: 100px;
-$grid-template: repeat(4,100px);
+$grid-template: repeat(4, 100px);
+
+body {
+  background-color: #faf8ef;
+  font-family: 'Gill Sans', sans-serif;
+}
+
+.grid-container {
+  position: fixed;
+  left: 50%;
+  margin-top: 10px;
+  margin-left: -215px;
+  z-index: -1;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: repeat(5, 82px);
+  grid-gap: 10px;
+
+  .title {
+    grid-column: 1/3;
+    grid-row: 1;
+    font-size: 70px;
+    font-weight: bolder;
+  }
+
+  .score {
+    grid-column: 4;
+    grid-row: 1;
+  }
+
+  .best {
+    grid-column: 5;
+    grid-row: 1;
+  }
+
+  .instruction {
+    grid-column: 1/5;
+    grid-row: 2;
+
+    &-highlight {
+      font-weight: bolder;
+    }
+  }
+
+  .title,
+  .instruction {
+    color: #776e65;
+  }
+
+  .new-game {
+    grid-column: 5;
+    grid-row: 2;
+    display: grid;
+    width: 90px;
+    margin-left: -28px;
+    font-weight: bolder;
+    justify-items: center;
+    color: #f9f6f2;
+    background-color: #8f7a66;
+    padding: 10px;
+  }
+
+  .number-wrapper,
+  .new-game {
+    border-radius: 3px;
+  }
+
+  .instructions,
+  .score,
+  .best {
+    display: grid;
+    align-items: center;
+  }
+
+  .score {
+    .number-wrapper {
+      margin-right: 18px;
+      margin-left: -18px;
+    }
+  }
+
+  .best {
+    .number-wrapper {
+      width: 100px;
+    }
+  }
+
+  .number-wrapper {
+    display: grid;
+    justify-items: center;
+    background-color: #bbada0;
+    font-weight: bolder;
+    color: #f9f6f2;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    .text {
+      font-size: 14px;
+      color: #eee4da;
+    }
+
+    .number {
+      font-size: 20px;
+    }
+  }
+}
 
 .container {
-  margin-left: 10px;
-  margin-top: 20px;
+  padding-left: 10px;
+  padding-top: 20px;
   margin-bottom: -9px;
   width: $container-width;
   height: $container-height;
@@ -22,28 +129,27 @@ $grid-template: repeat(4,100px);
     line-height: $box-height;
     font-size: 40px;
     font-weight: bolder;
-    font-family: "Gill Sans", sans-serif;
     color: #776e65;
     background-color: #eee4da;
   }
 }
 
-.wrapper {
+.place-container {
   width: $container-width;
   height: $container-height;
   display: grid;
   grid-gap: 10px;
   padding: 10px;
   margin-top: -431px;
-  border-radius: $border-radius;
+  border-radius: 6px;
   grid-template-columns: $grid-template;
   grid-template-rows: $grid-template;
   grid-auto-flow: column;
   background-color: #bbada0;
   position: absolute;
-  z-index: -2;
+  z-index: -1;
 
-  .place {    
+  .place {
     background-color: #cdc1b4;
     color: #ffffff;
     border-radius: $border-radius;
@@ -53,7 +159,7 @@ $grid-template: repeat(4,100px);
 }
 
 .bounce {
-  animation: bounceBox .25s !important;
+  animation: bounceBox 0.25s !important;
 }
 
 @keyframes createBox {

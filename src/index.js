@@ -1,20 +1,13 @@
 import './style.scss';
-import { 
-  renderItemList, 
+import {
+  renderItemList,
   updateRenderredItemList,
   removeBoxList,
   generateBoxList,
-  randomInRange
+  randomInRange,
 } from './render';
-import {
-  handleKeyDown,
-  isValidKey,
-  dontHaveAnyMoves
-} from './handleKeyDown';
-import {
-  someOfMarginsChanged,
-  isItemListFull,
-} from './moveCalculator';
+import { handleKeyDown, isValidKey, dontHaveAnyMoves } from './handleKeyDown';
+import { someOfMarginsChanged, isItemListFull } from './moveCalculator';
 
 let itemList = generateBoxList([], randomInRange(1, 2));
 
@@ -22,27 +15,27 @@ renderItemList(itemList);
 
 document.addEventListener('keydown', eventHandler, true);
 
-function eventHandler({keyCode, which}) {
+function eventHandler({ keyCode, which }) {
   const keycode = keyCode ? keyCode : which;
-    
-  if(isValidKey(keycode)) {
-    const {length} = itemList;
+
+  if (isValidKey(keycode)) {
+    const { length } = itemList;
     let prevList = [],
       someOfMarginsChangedValue;
 
-    if(length) {
+    if (length) {
       prevList = itemList;
       itemList = handleKeyDown(keycode, itemList);
       someOfMarginsChangedValue = someOfMarginsChanged(itemList, prevList);
-      if(someOfMarginsChangedValue) {
+      if (someOfMarginsChangedValue) {
         itemList = generateBoxList(itemList, 1);
-      } else if(!someOfMarginsChangedValue && isItemListFull(itemList)) {
-        if(dontHaveAnyMoves(itemList)) {
+      } else if (!someOfMarginsChangedValue && isItemListFull(itemList)) {
+        if (dontHaveAnyMoves(itemList)) {
           document.removeEventListener('keydown', eventHandler);
         }
       }
       updateRenderredItemList(itemList, prevList);
-      setTimeout(function() {
+      setTimeout(function () {
         itemList = removeBoxList(itemList);
       }, 95);
     }
