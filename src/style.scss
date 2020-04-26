@@ -89,6 +89,7 @@ body {
   .best {
     .number-wrapper {
       width: 100px;
+      margin-left: -18px;
     }
   }
 
@@ -102,12 +103,12 @@ body {
     padding-bottom: 5px;
 
     .text {
-      font-size: 14px;
+      font-size: 11px;
       color: #eee4da;
     }
 
     .number {
-      font-size: 20px;
+      font-size: 22px;
     }
   }
 }
