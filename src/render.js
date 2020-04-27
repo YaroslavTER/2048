@@ -1,6 +1,6 @@
-import { size } from "./moveCalculator";
-import { getKey } from "./keyGenerator";
-import { animate, getMargin, linear } from "./animation";
+import { size } from './moveCalculator';
+import { getKey } from './keyGenerator';
+import { animate, getMargin, linear } from './animation';
 
 const generateBoxList = (itemList, numberOfItems) => {
   const list = JSON.parse(JSON.stringify(itemList));
@@ -42,7 +42,7 @@ const areMarginsColide = (inputTop, inputLeft, itemList) =>
   );
 
 const renderItemList = (itemList) => {
-  const container = document.getElementsByClassName("container")[0];
+  const container = document.getElementsByClassName('container')[0];
   let zIndexCounter = 0;
 
   clearChildElements(container);
@@ -58,19 +58,27 @@ const clearChildElements = (domElement) => {
 };
 
 const createBox = ({ number, key, margin }, container, zIndex) => {
-  const box = document.createElement("div");
+  const box = document.createElement('div');
   box.innerText = number;
-  box.setAttribute("class", `box value-${number}`);
-  box.setAttribute("data-key", key);
+  box.setAttribute('class', `box ${getColorSelector(number)}`);
+  box.setAttribute('data-key', key);
   appendChildStyle(box, getBoxStyle(getBoxSelector(key), margin, zIndex));
   container.appendChild(box);
 };
 
+const getColorSelector = (number) => {
+  if (number <= 2048) {
+    return `value-${number}`;
+  } else {
+    return `value-hight`;
+  }
+};
+
 const appendChildStyle = (createdElement, styleText) => {
-  let css = document.createElement("style"),
+  let css = document.createElement('style'),
     style = styleText;
 
-  css.type = "text/css";
+  css.type = 'text/css';
 
   if (css.styleSheet) {
     css.styleSheet.cssText = style;
@@ -91,7 +99,7 @@ const updateRenderredItemList = (itemList, prevList) => {
     updateBox(item, prevMargin, zIndexCounter++);
     if (!prevItem) {
       setTimeout(function () {
-        const container = document.getElementsByClassName("container")[0];
+        const container = document.getElementsByClassName('container')[0];
         createBox(item, container, zIndexCounter++);
       }, 0);
     }
@@ -156,11 +164,11 @@ const bounceBox = (itemList, { margin: { top, left } }) => {
         currentTop === top && currentLeft === left && !needToRemove
     )[0],
     box = document.querySelector(getBoxSelector(key)),
-    bounceClassName = "bounce";
+    bounceClassName = 'bounce';
 
   box.classList.remove(bounceClassName);
   void box.offsetWidth;
-  box.classList.add(bounceClassName, `value-${number}`);
+  box.classList.add(bounceClassName, getColorSelector(number));
 };
 
 const getBoxSelector = (key) => `.box[data-key="${key}"]`;
@@ -173,10 +181,21 @@ const getBoxStyle = (boxSelector, { top, left }, zIndex) =>
     animation: createBox .25s;
   }`;
 
+const renderScore = (score) => renderNumber(score, '.score .number');
+
+const renderBestScore = (score) => renderNumber(score, '.best .number');
+
+const renderNumber = (number, selector) => {
+  const domElement = document.querySelector(selector);
+  domElement.innerText = number;
+};
+
 export {
   renderItemList,
   updateRenderredItemList,
   removeBoxList,
   generateBoxList,
   randomInRange,
+  renderScore,
+  renderBestScore,
 };

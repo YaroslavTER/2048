@@ -3,6 +3,7 @@ const size = {
   cell: 110,
   calculateMoveListLength: 4,
 };
+let score = 0;
 
 const calculateMoveDown = (itemList) =>
   calculateMoveInDirection(itemList, 'left', 'top', moveDown);
@@ -199,7 +200,8 @@ const joinPair = (
       margin: { [pivotMarginName]: pivotMargin, [moveMarginName]: moveMargin },
     } = subList[i],
     nextIndex = isIncreaseCounter ? i + 1 : i - 1,
-    { number: nextNumber } = subList[nextIndex] || {};
+    { number: nextNumber } = subList[nextIndex] || {},
+    gainedScore;
   const { cell } = size,
     resultMoveMargin = calculateResultMargin(
       joinedList,
@@ -212,6 +214,9 @@ const joinPair = (
     );
 
   if (nextNumber === number) {
+    gainedScore = number * 2;
+    score += gainedScore;
+
     return {
       pair: [
         {
@@ -225,7 +230,7 @@ const joinPair = (
         },
         {
           ...subList[i],
-          number: number * 2,
+          number: gainedScore,
           margin: {
             [moveMarginName]: resultMoveMargin,
             [pivotMarginName]: pivotMargin,
@@ -239,7 +244,7 @@ const joinPair = (
       pair: [
         {
           ...subList[i],
-          number: number,
+          number,
           margin: {
             [moveMarginName]: resultMoveMargin,
             [pivotMarginName]: pivotMargin,
@@ -287,6 +292,10 @@ const someOfMarginsChanged = (itemList, prevList) => {
 const isItemListFull = (itemList) =>
   Math.pow(size.grid + 1, 2) === itemList.length;
 
+const getScore = () => score;
+
+const resetScore = () => (score = 0);
+
 export {
   calculateMoveDown,
   calculateMoveUp,
@@ -294,5 +303,7 @@ export {
   calculateMoveLeft,
   someOfMarginsChanged,
   isItemListFull,
+  getScore,
+  resetScore,
   size,
 };

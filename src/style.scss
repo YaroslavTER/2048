@@ -65,6 +65,10 @@ body {
     color: #f9f6f2;
     background-color: #8f7a66;
     padding: 10px;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .number-wrapper,
@@ -229,4 +233,9 @@ body {
 .value-2048 {
   color: #f9f6f2 !important;
   background-color: #edc22d !important;
+}
+
+.value-hight {
+  color: #f9f6f2 !important;
+  background-color: #3c3a32 !important;
 }
