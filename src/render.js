@@ -151,7 +151,8 @@ const removeBoxList = (itemList) => {
     if (needToRemove) {
       bounceBox(itemList, item);
       const box = document.querySelector(getBoxSelector(key));
-      box.remove();
+      box.remove(); //get parent element and remove its child box is child, box.parentNode is container
+      //domElement.removeChild(domElement.lastChild);
     } else {
       return item;
     }
