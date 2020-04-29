@@ -186,6 +186,7 @@ const bounceBox = (itemList, { margin: { top, left } }) => {
 
   box.classList.remove(bounceClassName);
   void box.offsetWidth;
+  box.classList.add(bounceClassName);
 };
 
 const getBoxSelector = (key) => `.box[data-key="${key}"]`;
