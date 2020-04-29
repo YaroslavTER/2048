@@ -1,6 +1,7 @@
 import {
   renderItemList,
   updateRenderredItemList,
+  markDomElementsForRemove,
   removeBoxList,
   generateBoxList,
   randomInRange,
@@ -30,33 +31,31 @@ function startGame() {
   document.addEventListener('keydown', eventHandler, true);
 }
 
-function eventHandler({ keyCode, which }) {
-  const keycode = keyCode ? keyCode : which,
+function eventHandler(event) {
+  const { keyCode, which } = event,
+    keycode = keyCode ? keyCode : which,
     currentTime = Date.now();
-  let diff = 0,
-    timeout = 0;
-
-  diff = currentTime - prevTime;
+  let diff = currentTime - prevTime;
 
   if (isValidKey(keycode)) {
-    const { length } = itemList;
-    let prevList = [],
-      score;
+    event.preventDefault();
 
-    if (length) {
-      prevList = itemList;
-      itemList = handleKeyDown(keycode, itemList);
-      score = scoreHandler(score);
-      itemList = gameOverHandler(itemList, prevList);
-      updateRenderredItemList(itemList, prevList);
-      if (diff < 95) {
-        timeout = 0;
-      } else {
-        timeout = 95;
+    if (diff > 65) {
+      const { length } = itemList;
+      let prevList = [],
+        score;
+
+      if (length) {
+        prevList = itemList;
+        itemList = handleKeyDown(keycode, itemList);
+        score = scoreHandler(score);
+        itemList = gameOverHandler(itemList, prevList);
+        updateRenderredItemList(itemList, prevList);
+        markDomElementsForRemove(itemList);
+        setTimeout(function () {
+          itemList = removeBoxList(itemList);
+        }, 95);
       }
-      setTimeout(function () {
-        itemList = removeBoxList(itemList);
-      }, timeout);
     }
   }
 

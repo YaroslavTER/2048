@@ -124,6 +124,7 @@ const moveBoxAnimation = (
   animate({
     timing: linear,
     draw(progress) {
+      //set color classes on animation ending
       if (box) {
         clearChildElements(box);
         box.innerText = number;
@@ -145,19 +146,31 @@ const moveBoxAnimation = (
   });
 };
 
+const markDomElementsForRemove = (itemList) => {
+  itemList.forEach(({ key, needToRemove }) => {
+    if (needToRemove) {
+      const box = document.querySelector(getBoxSelector(key));
+      box.classList.add('need-to-remove');
+    }
+  });
+};
+
 const removeBoxList = (itemList) => {
+  removeMarkedDomElements();
   return itemList.filter((item) => {
-    const { key, needToRemove } = item;
+    const { needToRemove } = item;
     if (needToRemove) {
       bounceBox(itemList, item);
-      const box = document.querySelector(getBoxSelector(key));
-      box.remove(); //get parent element and remove its child box is child, box.parentNode is container
-      //domElement.removeChild(domElement.lastChild);
     } else {
       return item;
     }
   });
 };
+
+const removeMarkedDomElements = () =>
+  Array.from(document.getElementsByClassName('need-to-remove')).forEach((box) =>
+    box.remove()
+  );
 
 const bounceBox = (itemList, { margin: { top, left } }) => {
   const { number, key } = itemList.filter(
@@ -194,6 +207,7 @@ const renderNumber = (number, selector) => {
 export {
   renderItemList,
   updateRenderredItemList,
+  markDomElementsForRemove,
   removeBoxList,
   generateBoxList,
   randomInRange,

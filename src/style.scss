@@ -4,6 +4,8 @@ $container-width: 430px;
 $box-height: 100px;
 $box-width: 100px;
 $grid-template: repeat(4, 100px);
+$notes-color: #776e65;
+$white-color: #f9f6f2;
 
 body {
   background-color: #faf8ef;
@@ -11,9 +13,9 @@ body {
 }
 
 .grid-container {
-  position: fixed;
+  position: absolute;
   left: 50%;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-left: -215px;
   z-index: -1;
 }
@@ -22,6 +24,7 @@ body {
   display: grid;
   grid-template-columns: repeat(5, 82px);
   grid-gap: 10px;
+  margin-bottom: 10px;
 
   .title {
     grid-column: 1/3;
@@ -43,15 +46,11 @@ body {
   .instruction {
     grid-column: 1/5;
     grid-row: 2;
-
-    &-highlight {
-      font-weight: bolder;
-    }
   }
 
   .title,
   .instruction {
-    color: #776e65;
+    color: $notes-color;
   }
 
   .new-game {
@@ -62,7 +61,7 @@ body {
     margin-left: -28px;
     font-weight: bolder;
     justify-items: center;
-    color: #f9f6f2;
+    color: $white-color;
     background-color: #8f7a66;
     padding: 10px;
 
@@ -102,7 +101,7 @@ body {
     justify-items: center;
     background-color: #bbada0;
     font-weight: bolder;
-    color: #f9f6f2;
+    color: $white-color;
     padding-top: 5px;
     padding-bottom: 5px;
 
@@ -134,7 +133,7 @@ body {
     line-height: $box-height;
     font-size: 40px;
     font-weight: bolder;
-    color: #776e65;
+    color: $notes-color;
     background-color: #eee4da;
   }
 }
@@ -186,56 +185,68 @@ body {
 }
 
 .value-4 {
-  color: #776e65 !important;
+  color: $notes-color !important;
   background-color: #ede0c8 !important;
 }
 
 .value-8 {
-  color: #f9f6f2 !important;
+  color: $white-color !important;
   background-color: #f2b179 !important;
 }
 
 .value-16 {
-  color: #f9f6f2 !important;
+  color: $white-color !important;
   background-color: #f59563 !important;
 }
 
 .value-32 {
-  color: #f9f6f2 !important;
+  color: $white-color !important;
   background-color: #f67c60 !important;
 }
 
 .value-64 {
-  color: #f9f6f2 !important;
+  color: $white-color !important;
   background-color: #f65e3b !important;
 }
 
 .value-128 {
-  color: #f9f6f2 !important;
+  color: $white-color !important;
   background-color: #edcf73 !important;
 }
 
 .value-256 {
-  color: #f9f6f2 !important;
+  color: $white-color !important;
   background-color: #edcc62 !important;
 }
 
 .value-512 {
-  color: #f9f6f2 !important;
+  color: $white-color !important;
   background-color: #edc850 !important;
 }
 
 .value-1024 {
-  color: #f9f6f2 !important;
+  color: $white-color !important;
   background-color: #edc850 !important;
 }
 
 .value-2048 {
-  color: #f9f6f2 !important;
+  color: $white-color !important;
   background-color: #edc22d !important;
 }
 
 .value-hight {
-  color: #f9f6f2 !important;
+  color: $white-color !important;
   background-color: #3c3a32 !important;
+}
+
+.note {
+  margin-top: 40px;
+  margin-bottom: 200px;
+  width: 450px;
+  font-size: 18px;
+  color: $notes-color;
+}
+
+.highlight {
+  font-weight: bolder;
 }
