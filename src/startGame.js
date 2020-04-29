@@ -23,12 +23,14 @@ let itemList = [],
 startGame();
 
 function startGame() {
+  const eventName = 'keydown';
+
   resetScore();
   renderScore(0);
   itemList = generateBoxList([], randomInRange(1, 2));
-  document.removeEventListener('keydown', eventHandler, true);
+  document.removeEventListener(eventName, eventHandler);
   renderItemList(itemList);
-  document.addEventListener('keydown', eventHandler, true);
+  document.addEventListener(eventName, eventHandler);
 }
 
 function eventHandler(event) {
