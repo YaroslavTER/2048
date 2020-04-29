@@ -121,10 +121,9 @@ const moveBoxAnimation = (
   zIndex,
   msDuration
 ) => {
-  animate({
-    timing: linear,
-    draw(progress) {
-      //set color classes on animation ending
+  animate(
+    linear,
+    (progress) => {
       if (box) {
         clearChildElements(box);
         box.innerText = number;
@@ -142,8 +141,13 @@ const moveBoxAnimation = (
         );
       }
     },
-    duration: msDuration * 1000,
-  });
+    () => {
+      if (box && box !== null) {
+        box.classList.add(getColorSelector(number));
+      }
+    },
+    msDuration * 1000
+  );
 };
 
 const markDomElementsForRemove = (itemList) => {
@@ -173,7 +177,7 @@ const removeMarkedDomElements = () =>
   );
 
 const bounceBox = (itemList, { margin: { top, left } }) => {
-  const { number, key } = itemList.filter(
+  const { key } = itemList.filter(
       ({ margin: { top: currentTop, left: currentLeft }, needToRemove }) =>
         currentTop === top && currentLeft === left && !needToRemove
     )[0],
@@ -182,7 +186,6 @@ const bounceBox = (itemList, { margin: { top, left } }) => {
 
   box.classList.remove(bounceClassName);
   void box.offsetWidth;
-  box.classList.add(bounceClassName, getColorSelector(number));
 };
 
 const getBoxSelector = (key) => `.box[data-key="${key}"]`;
