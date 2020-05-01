@@ -7,6 +7,9 @@ import {
   randomInRange,
   renderScore,
   renderBestScore,
+  showGameOverWindow,
+  hideGameOverWindow,
+  getMaxZIndex,
 } from './render';
 import { handleKeyDown, isValidKey, dontHaveAnyMoves } from './handleKeyDown';
 import {
@@ -18,7 +21,8 @@ import {
 
 let itemList = [],
   bestScore = 0,
-  prevTime = 0;
+  prevTime = 0,
+  score = 0;
 
 startGame();
 
@@ -27,6 +31,7 @@ function startGame() {
 
   resetScore();
   renderScore(0);
+  hideGameOverWindow();
   itemList = generateBoxList([], randomInRange(1, 2));
   document.removeEventListener(eventName, eventHandler);
   renderItemList(itemList);
@@ -44,13 +49,11 @@ function eventHandler(event) {
 
     if (diff > 65) {
       const { length } = itemList;
-      let prevList = [],
-        score;
+      let prevList = [];
 
       if (length) {
         prevList = itemList;
         itemList = handleKeyDown(keycode, itemList);
-        score = scoreHandler(score);
         itemList = gameOverHandler(itemList, prevList);
         updateRenderredItemList(itemList, prevList);
         markDomElementsForRemove(itemList);
@@ -77,11 +80,14 @@ const scoreHandler = (score) => {
 const gameOverHandler = (itemList, prevList) => {
   let someOfMarginsChangedValue = someOfMarginsChanged(itemList, prevList);
   if (someOfMarginsChangedValue) {
+    score = scoreHandler(score);
     itemList = generateBoxList(itemList, 1);
-  } else if (itemList.length >= 16) {
+  } else if (itemList.length === 16) {
     if (!someOfMarginsChangedValue && isItemListFull(itemList)) {
       if (dontHaveAnyMoves(itemList)) {
+        console.log('gameover');
         document.removeEventListener('keydown', eventHandler);
+        showGameOverWindow(getMaxZIndex(itemList));
       }
     }
   }

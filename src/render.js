@@ -208,6 +208,25 @@ const renderNumber = (number, selector) => {
   domElement.innerText = number;
 };
 
+const showGameOverWindow = (zIndex) => {
+  const gameOverWindow = document.getElementsByClassName('game-over-window')[0];
+  gameOverWindow.classList.remove('hidden');
+  gameOverWindow.style.zIndex = zIndex;
+};
+
+const hideGameOverWindow = () => {
+  const gameOverWindow = document.getElementsByClassName('game-over-window')[0],
+    hideClassName = 'hidden';
+  if (!gameOverWindow.classList.contains(hideClassName)) {
+    gameOverWindow.classList.add(hideClassName);
+  }
+};
+
+const getMaxZIndex = (itemList) => {
+  Array.from(document.getElementsByClassName('box')).forEach((box) => {});
+  return 99999;
+};
+
 export {
   renderItemList,
   updateRenderredItemList,
@@ -217,4 +236,7 @@ export {
   randomInRange,
   renderScore,
   renderBestScore,
+  showGameOverWindow,
+  hideGameOverWindow,
+  getMaxZIndex,
 };
