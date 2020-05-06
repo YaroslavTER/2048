@@ -32,9 +32,9 @@ const isValidKey = (inputKey) => {
 };
 
 const dontHaveAnyMoves = (itemList) =>
-  !someOfMarginsChanged(itemList, calculateMoveDown(itemList)) ||
-  !someOfMarginsChanged(itemList, calculateMoveRight(itemList)) ||
-  !someOfMarginsChanged(itemList, calculateMoveUp(itemList)) ||
+  !someOfMarginsChanged(itemList, calculateMoveDown(itemList)) &&
+  !someOfMarginsChanged(itemList, calculateMoveRight(itemList)) &&
+  !someOfMarginsChanged(itemList, calculateMoveUp(itemList)) &&
   !someOfMarginsChanged(itemList, calculateMoveLeft(itemList));
 
 export { handleKeyDown, isValidKey, dontHaveAnyMoves };

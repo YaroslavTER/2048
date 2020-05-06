@@ -9,14 +9,16 @@ import {
   renderBestScore,
   showGameOverWindow,
   hideGameOverWindow,
-  getMaxZIndex,
+  showYouWinWindow,
 } from './render';
 import { handleKeyDown, isValidKey, dontHaveAnyMoves } from './handleKeyDown';
 import {
   someOfMarginsChanged,
-  isItemListFull,
   getScore,
   resetScore,
+  isItemListFull,
+  getMaxZIndex,
+  isWin,
 } from './moveCalculator';
 
 let itemList = [],
@@ -54,6 +56,9 @@ function eventHandler(event) {
       if (length) {
         prevList = itemList;
         itemList = handleKeyDown(keycode, itemList);
+        if (isWin(itemList)) {
+          showWinWindow(getMaxZIndex());
+        }
         itemList = gameOverHandler(itemList, prevList);
         updateRenderredItemList(itemList, prevList);
         markDomElementsForRemove(itemList);
@@ -82,12 +87,11 @@ const gameOverHandler = (itemList, prevList) => {
   if (someOfMarginsChangedValue) {
     score = scoreHandler(score);
     itemList = generateBoxList(itemList, 1);
-  } else if (itemList.length === 16) {
-    if (!someOfMarginsChangedValue && isItemListFull(itemList)) {
+  } else if (isItemListFull(itemList)) {
+    if (!someOfMarginsChangedValue) {
       if (dontHaveAnyMoves(itemList)) {
-        console.log('gameover');
         document.removeEventListener('keydown', eventHandler);
-        showGameOverWindow(getMaxZIndex(itemList));
+        showGameOverWindow(getMaxZIndex());
       }
     }
   }

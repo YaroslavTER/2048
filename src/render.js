@@ -208,11 +208,7 @@ const renderNumber = (number, selector) => {
   domElement.innerText = number;
 };
 
-const showGameOverWindow = (zIndex) => {
-  const gameOverWindow = document.getElementsByClassName('game-over-window')[0];
-  gameOverWindow.classList.remove('hidden');
-  gameOverWindow.style.zIndex = zIndex;
-};
+const showGameOverWindow = (zIndex) => showWindow(zIndex, 'game-over-window');
 
 const hideGameOverWindow = () => {
   const gameOverWindow = document.getElementsByClassName('game-over-window')[0],
@@ -222,9 +218,14 @@ const hideGameOverWindow = () => {
   }
 };
 
-const getMaxZIndex = (itemList) => {
-  Array.from(document.getElementsByClassName('box')).forEach((box) => {});
-  return 99999;
+const showYouWinWindow = (zIndex) => showWindow(zIndex, 'you-win-window');
+
+const showWindow = (zIndex, className) => {
+  const window = document.getElementsByClassName(className)[0];
+  if (window) {
+    window.classList.remove('hidden');
+    window.style.zIndex = zIndex;
+  }
 };
 
 export {
@@ -238,5 +239,5 @@ export {
   renderBestScore,
   showGameOverWindow,
   hideGameOverWindow,
-  getMaxZIndex,
+  showYouWinWindow,
 };

@@ -289,21 +289,29 @@ const someOfMarginsChanged = (itemList, prevList) => {
   });
 };
 
-const isItemListFull = (itemList) =>
-  Math.pow(size.grid + 1, 2) === itemList.length;
-
 const getScore = () => score;
 
 const resetScore = () => (score = 0);
 
+const isItemListFull = (itemList) => getMaxNumberOfItems() === itemList.length;
+
+const getMaxZIndex = () => getMaxNumberOfItems() + 1;
+
+const getMaxNumberOfItems = () => Math.pow(size.grid + 1, 2);
+
+const isWin = (itemList) =>
+  !!itemList.filter(({ number }) => number === 2048)[0];
+
 export {
+  size,
   calculateMoveDown,
   calculateMoveUp,
   calculateMoveRight,
   calculateMoveLeft,
   someOfMarginsChanged,
-  isItemListFull,
   getScore,
   resetScore,
-  size,
+  isItemListFull,
+  getMaxZIndex,
+  isWin,
 };
