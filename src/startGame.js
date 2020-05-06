@@ -57,7 +57,7 @@ function eventHandler(event) {
         prevList = itemList;
         itemList = handleKeyDown(keycode, itemList);
         if (isWin(itemList)) {
-          showWinWindow(getMaxZIndex());
+          showYouWinWindow(getMaxZIndex());
         }
         itemList = gameOverHandler(itemList, prevList);
         updateRenderredItemList(itemList, prevList);

@@ -19,7 +19,7 @@ const generateBox = (itemList) => {
   } while (areMarginsColide(top, left, itemList));
 
   return {
-    number: randomInRange(1, 2) * 2,
+    number: 1024, //randomInRange(1, 2) * 2,
     key: getKey(),
     margin: {
       top,
