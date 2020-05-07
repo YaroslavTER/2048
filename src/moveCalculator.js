@@ -299,7 +299,7 @@ const getMaxZIndex = () => getMaxNumberOfItems() + 1;
 
 const getMaxNumberOfItems = () => Math.pow(size.grid + 1, 2);
 
-const isWin = (itemList) => itemList.some(({ number }) => number === 2048)[0];
+const isWin = (itemList) => itemList.some(({ number }) => number === 2048);
 
 export {
   size,

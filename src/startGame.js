@@ -7,9 +7,11 @@ import {
   randomInRange,
   renderScore,
   renderBestScore,
+  addButtonHandler,
   showGameOverWindow,
   hideGameOverWindow,
   showYouWinWindow,
+  hideYouWinWindow,
 } from './render';
 import { handleKeyDown, isValidKey, dontHaveAnyMoves } from './handleKeyDown';
 import {
@@ -26,13 +28,14 @@ let itemList = [],
   prevTime = 0,
   score = 0;
 
-startGame();
+addButtonHandler('keep-going', hideYouWinWindow);
 
 function startGame() {
   const eventName = 'keydown';
 
   resetScore();
   renderScore(0);
+  hideYouWinWindow();
   hideGameOverWindow();
   itemList = generateBoxList([], randomInRange(1, 2));
   document.removeEventListener(eventName, eventHandler);

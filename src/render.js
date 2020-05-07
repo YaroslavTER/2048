@@ -2,6 +2,11 @@ import { size } from './moveCalculator';
 import { getKey } from './keyGenerator';
 import { animate, getMargin, linear } from './animation';
 
+const windowClassName = {
+  gameOver: 'game-over-window',
+  youWin: 'you-win-window',
+};
+
 const generateBoxList = (itemList, numberOfItems) => {
   const list = JSON.parse(JSON.stringify(itemList));
   for (let i = 0; i < numberOfItems; i++) {
@@ -19,7 +24,7 @@ const generateBox = (itemList) => {
   } while (areMarginsColide(top, left, itemList));
 
   return {
-    number: 1024, //randomInRange(1, 2) * 2,
+    number: randomInRange(1, 2) * 2,
     key: getKey(),
     margin: {
       top,
@@ -208,23 +213,33 @@ const renderNumber = (number, selector) => {
   domElement.innerText = number;
 };
 
-const showGameOverWindow = (zIndex) => showWindow(zIndex, 'game-over-window');
+const addButtonHandler = (className, callback) =>
+  document
+    .getElementsByClassName(className)[0]
+    .addEventListener('click', () => callback());
 
-const hideGameOverWindow = () => {
-  const gameOverWindow = document.getElementsByClassName('game-over-window')[0],
-    hideClassName = 'hidden';
-  if (!gameOverWindow.classList.contains(hideClassName)) {
-    gameOverWindow.classList.add(hideClassName);
-  }
-};
+const showGameOverWindow = (zIndex) =>
+  showWindow(zIndex, windowClassName.gameOver);
 
-const showYouWinWindow = (zIndex) => showWindow(zIndex, 'you-win-window');
+const hideGameOverWindow = () => hideWindow(windowClassName.gameOver);
+
+const showYouWinWindow = (zIndex) => showWindow(zIndex, windowClassName.youWin);
+
+const hideYouWinWindow = () => hideWindow(windowClassName.youWin);
 
 const showWindow = (zIndex, className) => {
   const window = document.getElementsByClassName(className)[0];
   if (window) {
     window.classList.remove('hidden');
     window.style.zIndex = zIndex;
+  }
+};
+
+const hideWindow = (className) => {
+  const gameOverWindow = document.getElementsByClassName(className)[0],
+    hideClassName = 'hidden';
+  if (!gameOverWindow.classList.contains(hideClassName)) {
+    gameOverWindow.classList.add(hideClassName);
   }
 };
 
@@ -237,7 +252,9 @@ export {
   randomInRange,
   renderScore,
   renderBestScore,
+  addButtonHandler,
   showGameOverWindow,
   hideGameOverWindow,
   showYouWinWindow,
+  hideYouWinWindow,
 };

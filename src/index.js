@@ -1,8 +1,6 @@
 import './style.scss';
+import { addButtonHandler } from './render';
 import { startGame } from './startGame';
 
-document
-  .getElementsByClassName('new-game')[0]
-  .addEventListener('click', function () {
-    startGame();
-  });
+startGame();
+addButtonHandler('new-game', startGame);

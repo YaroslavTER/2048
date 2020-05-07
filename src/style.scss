@@ -6,6 +6,9 @@ $box-width: 100px;
 $grid-template: repeat(4, 100px);
 $notes-color: #776e65;
 $white-color: #f9f6f2;
+$button-color: #8f7a66;
+$win-color: #edc32c;
+$window-opacity: 0.6;
 
 body {
   background-color: #faf8ef;
@@ -62,7 +65,7 @@ body {
     font-weight: bolder;
     justify-items: center;
     color: $white-color;
-    background-color: #8f7a66;
+    background-color: $button-color;
     padding: 10px;
 
     &:hover {
@@ -72,7 +75,7 @@ body {
 
   .number-wrapper,
   .new-game {
-    border-radius: 3px;
+    border-radius: $border-radius;
   }
 
   .instructions,
@@ -231,7 +234,7 @@ body {
 
 .value-2048 {
   color: $white-color !important;
-  background-color: #edc22d !important;
+  background-color: $win-color !important;
 }
 
 .value-hight {
@@ -263,14 +266,44 @@ body {
     margin-top: -431px;
     border-radius: 6px;
     z-index: 1;
-    background-color: rgba(255, 255, 255, 0.6);
 
     span {
       font-size: 40px;
       font-weight: bolder;
-      color: $notes-color;
     }
   }
+}
+
+@mixin window($background-color, $color) {
+  background-color: $background-color;
+  span {
+    color: $color;
+  }
+}
+
+.game-over-window {
+  @include window(rgba($white-color, $window-opacity), $notes-color);
+}
+
+.you-win-window {
+  .container {
+    display: grid;
+    justify-items: center;
+    height: 100px;
+
+    .keep-going {
+      display: grid;
+      align-items: center;
+      padding: 8px;
+      height: 20px;
+      background-color: $button-color;
+      color: $white-color;
+      font-weight: bold;
+      border-radius: $border-radius;
+      cursor: pointer;
+    }
+  }
+  @include window(rgba($win-color, $window-opacity), $white-color);
 }
 
 .hidden {
