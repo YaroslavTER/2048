@@ -1,6 +1,6 @@
 # 2048
 
-Based on [originl game](https://github.com/gabrielecirulli/2048)
+Based on [original game](https://github.com/gabrielecirulli/2048)
 
 # Gameplay record
 
