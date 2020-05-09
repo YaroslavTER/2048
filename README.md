@@ -1,8 +1,8 @@
 # 2048
 
-You can play [here](https://priceless-nightingale-b21a29.netlify.app/)
+You can play [here](https://priceless-nightingale-b21a29.netlify.app/).
 
-Based on [original game](https://github.com/gabrielecirulli/2048)
+Based on [original game](https://github.com/gabrielecirulli/2048).
 
 # Gameplay record
 
