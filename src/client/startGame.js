@@ -22,6 +22,15 @@ import {
   getMaxZIndex,
   isWin,
 } from './moveCalculator';
+import io from 'socket.io-client';
+
+const socket = io();
+
+socket.emit('create', 123);
+
+socket.on('score', function (points) {
+  console.log(points);
+});
 
 let itemList = [],
   bestScore = 0,
@@ -89,6 +98,7 @@ const gameOverHandler = (itemList, prevList) => {
   let someOfMarginsChangedValue = someOfMarginsChanged(itemList, prevList);
   if (someOfMarginsChangedValue) {
     score = scoreHandler(score);
+    socket.emit('score', score);
     itemList = generateBoxList(itemList, 1);
   } else if (isItemListFull(itemList)) {
     if (!someOfMarginsChangedValue) {

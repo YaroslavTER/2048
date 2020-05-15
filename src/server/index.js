@@ -10,9 +10,10 @@ io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('create', function (room) {
     socket.join(room);
+    console.log(`a room ${room} has been created`);
 
-    socket.on('chat message', (message) => {
-      socket.broadcast.to(room).emit('chat message', message);
+    socket.on('score', (points) => {
+      socket.broadcast.to(room).emit('score', points);
     });
 
     socket.on('disconnect', () => {
