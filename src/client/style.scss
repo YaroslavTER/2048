@@ -4,9 +4,11 @@ $container-width: 430px;
 $box-height: 100px;
 $box-width: 100px;
 $grid-template: repeat(4, 100px);
+$notes-font-size: 18px;
 $notes-color: #776e65;
 $white-color: #f9f6f2;
 $button-color: #8f7a66;
+$score-background-color: #bbada0;
 $win-color: #edc32c;
 $window-opacity: 0.6;
 $big-font-size-fire-fox: 35px;
@@ -103,7 +105,7 @@ body {
   .number-wrapper {
     display: grid;
     justify-items: center;
-    background-color: #bbada0;
+    background-color: $score-background-color;
     font-weight: bolder;
     color: $white-color;
     padding-top: 5px;
@@ -247,7 +249,7 @@ body {
   margin-top: 40px;
   margin-bottom: 100px;
   width: 450px;
-  font-size: 18px;
+  font-size: $notes-font-size;
   color: $notes-color;
 }
 
@@ -334,4 +336,42 @@ body {
 
 .hidden {
   display: none;
+}
+
+.competitor-list-container {
+  position: absolute;
+  left: 50%;
+  margin-top: 65px;
+  margin-left: 265px;
+  color: $notes-color;
+
+  .title {
+    font-weight: bolder;
+    font-size: $notes-font-size;
+  }
+
+  .competitor-list {
+    margin-top: 20px;
+  }
+
+  .competitor {
+    margin-bottom: 10px;
+
+    div {
+      display: inline-block;
+    }
+
+    .name,
+    .score {
+      font-weight: bold;
+    }
+
+    .score {
+      background-color: gray;
+      border-radius: $border-radius;
+      padding: 5px;
+      color: $white-color;
+      background-color: $score-background-color;
+    }
+  }
 }
