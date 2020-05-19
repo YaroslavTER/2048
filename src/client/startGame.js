@@ -12,6 +12,9 @@ import {
   hideGameOverWindow,
   showYouWinWindow,
   hideYouWinWindow,
+  getValuesFromStartModalWindow,
+  hideStartModalWindow,
+  renderCompetitorList,
 } from './render';
 import { handleKeyDown, isValidKey, dontHaveAnyMoves } from './handleKeyDown';
 import {
@@ -26,16 +29,25 @@ import io from 'socket.io-client';
 
 const socket = io();
 
-socket.emit('create', 123);
-
-socket.on('score', function (points) {
-  console.log(points);
-});
-
 let itemList = [],
+  competitorSet = {},
   bestScore = 0,
   prevTime = 0,
   score = 0;
+
+socket.on('score', function ({ name, points }) {
+  competitorSet[name] = points;
+  renderCompetitorList(competitorSet);
+});
+
+const modalWindow = document.getElementsByClassName('start-modal-window')[0];
+modalWindow.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const { name, room } = getValuesFromStartModalWindow();
+
+  hideStartModalWindow();
+  socket.emit('create', { room, name });
+});
 
 addButtonHandler('keep-going', hideYouWinWindow);
 

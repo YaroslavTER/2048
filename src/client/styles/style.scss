@@ -3,7 +3,7 @@
 @import './startModalWindow.scss';
 
 body {
-  background-color: #faf8ef;
+  background-color: $main-background-color;
   color: $notes-color;
   font-family: 'Gill Sans', sans-serif;
 }
@@ -139,7 +139,7 @@ body {
   grid-template-columns: $grid-template;
   grid-template-rows: $grid-template;
   grid-auto-flow: column;
-  background-color: #bbada0;
+  background-color: $score-background-color;
   position: absolute;
   z-index: -1;
 

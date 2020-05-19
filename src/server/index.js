@@ -8,12 +8,13 @@ app.use(bundler.middleware());
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-  socket.on('create', function (room) {
+  socket.on('create', function ({ room, name }) {
     socket.join(room);
     console.log(`a room ${room} has been created`);
+    console.log(`user name is ${name}`);
 
     socket.on('score', (points) => {
-      socket.broadcast.to(room).emit('score', points);
+      socket.broadcast.to(room).emit('score', { name, points });
     });
 
     socket.on('disconnect', () => {

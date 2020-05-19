@@ -1,5 +1,10 @@
 $margin-top: 15px;
 $top-down-margin: 20px;
+$font-size: 17px;
+
+.scroll-lock {
+  overflow: hidden;
+}
 
 .modal-window-container {
   position: fixed;
@@ -11,29 +16,53 @@ $top-down-margin: 20px;
   width: 100%;
   height: 100%;
   background-color: rgba(#000000, 0.6);
-  font-size: 17px;
+  font-size: $font-size;
 
   .start-modal-window {
     display: grid;
+    grid-template-rows: 0.3fr 0.25fr 0.3fr;
     width: 380px;
     height: 270px;
     padding: 50px;
     padding-top: $top-down-margin;
     padding-bottom: $top-down-margin;
-    border: 1px solid black;
-    background-color: #faf8ef;
+    border-radius: $border-radius;
+    background-color: $main-background-color;
+
+    input,
+    .generate-room {
+      border-radius: $border-radius;
+    }
 
     input {
       height: 30px;
+
+      &[type='text'] {
+        border: none;
+        border: 1px solid $score-background-color;
+        text-decoration: none;
+        color: $notes-color;
+        font-size: $font-size;
+        padding-left: 10px;
+      }
+
+      &::placeholder {
+        font-size: $font-size;
+      }
+
+      &:focus {
+        outline: none;
+      }
     }
 
     .title {
       font-weight: bold;
+      font-size: 20px;
       grid-column: 1;
       grid-row: 1;
     }
 
-    .name {
+    .input-name {
       grid-column: 1/3;
       grid-row: 2;
     }
@@ -41,6 +70,17 @@ $top-down-margin: 20px;
     .generate-room {
       grid-column: 1;
       grid-row: 3;
+      display: grid;
+      align-items: center;
+      justify-items: center;
+      height: 35px;
+      margin-right: 10px;
+      font-weight: bolder;
+      padding-left: 5px;
+      padding-right: 5px;
+      color: $white-color;
+      background-color: $button-color;
+      cursor: pointer;
     }
 
     .input-room {
@@ -49,9 +89,15 @@ $top-down-margin: 20px;
     }
 
     .play {
-      margin-top: $margin-top;
       grid-column: 1;
       grid-row: 4;
+      width: 100px;
+      border: none;
+      background-color: $button-color;
+      color: $white-color;
+      font-size: $font-size;
+      font-weight: bolder;
+      cursor: pointer;
     }
   }
 }

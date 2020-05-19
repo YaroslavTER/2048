@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2048</title>
   </head>
-  <body>
+  <body class="scroll-lock">
     <div class="grid-container">
       <div class="header">
         <div class="title">
@@ -91,12 +91,18 @@
     <div class="modal-window-container">
       <form class="start-modal-window">
         <div class="title">Join the room</div>
-        <input type="text" placeholder="player name" class="name" />
+        <input
+          class="input-name"
+          type="text"
+          name="player-name"
+          placeholder="player name"
+        />
         <div class="generate-room">Generate room</div>
         <input
-          type="text"
-          placeholder="generate or input room"
           class="input-room"
+          type="text"
+          name="room"
+          placeholder="generate or input room"
         />
         <input type="submit" value="Play" class="play" />
       </form>

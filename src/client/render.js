@@ -243,6 +243,27 @@ const hideWindow = (className) => {
   }
 };
 
+const getValuesFromStartModalWindow = () => ({
+  name: document.getElementsByClassName('input-name')[0].value,
+  room: document.getElementsByClassName('input-room')[0].value,
+});
+
+const hideStartModalWindow = () => {
+  document
+    .getElementsByClassName('modal-window-container')[0]
+    .classList.add('hidden');
+  document.getElementsByTagName('body')[0].classList.remove('scroll-lock');
+};
+
+const renderCompetitorList = (competitorSet) => {
+  const keyList = Object.keys(competitorSet);
+  keyList.forEach((key) => {
+    const name = key,
+      points = competitorSet[key];
+    console.log(name, points);
+  });
+};
+
 export {
   renderItemList,
   updateRenderredItemList,
@@ -257,4 +278,7 @@ export {
   hideGameOverWindow,
   showYouWinWindow,
   hideYouWinWindow,
+  getValuesFromStartModalWindow,
+  hideStartModalWindow,
+  renderCompetitorList,
 };
