@@ -63,10 +63,10 @@ const clearChildElements = (domElement) => {
 };
 
 const createBox = ({ number, key, margin }, container, zIndex) => {
-  const box = document.createElement('div');
-  box.innerText = number;
-  box.setAttribute('class', `box ${getColorSelector(number)}`);
-  box.setAttribute('data-key', key);
+  const box = createDiv(number, [
+    { name: 'class', value: `box ${getColorSelector(number)}` },
+    { name: 'data-key', value: key },
+  ]);
   appendChildStyle(box, getBoxStyle(getBoxSelector(key), margin, zIndex));
   container.appendChild(box);
 };
@@ -243,6 +243,49 @@ const hideWindow = (className) => {
   }
 };
 
+const getValuesFromStartModalWindow = () => ({
+  name: document.getElementsByClassName('input-name')[0].value,
+  room: document.getElementsByClassName('input-room')[0].value,
+});
+
+const hideStartModalWindow = () => {
+  document
+    .getElementsByClassName('modal-window-container')[0]
+    .classList.add('hidden');
+  document.getElementsByTagName('body')[0].classList.remove('scroll-lock');
+};
+
+const renderCompetitorList = (competitorSet) => {
+  const keyList = Object.keys(competitorSet),
+    competitorList = document.getElementsByClassName('competitor-list')[0];
+
+  clearChildElements(competitorList);
+  keyList.forEach((key) => {
+    const name = key,
+      points = competitorSet[key];
+    competitorList.appendChild(createCompetitor(name, points));
+  });
+};
+
+const createCompetitor = (name, points) => {
+  const competitor = createDiv(null, [{ name: 'class', value: 'competitor' }]),
+    nameBox = createDiv(`${name} : `, [{ name: 'class', value: 'name' }]),
+    pointsBox = createDiv(points, [{ name: 'class', value: 'score' }]);
+
+  competitor.appendChild(nameBox);
+  competitor.appendChild(pointsBox);
+
+  return competitor;
+};
+
+const createDiv = (innerText, attributeList) => {
+  const box = document.createElement('div');
+  box.innerText = innerText;
+
+  attributeList.forEach(({ name, value }) => box.setAttribute(name, value));
+  return box;
+};
+
 export {
   renderItemList,
   updateRenderredItemList,
@@ -257,4 +300,7 @@ export {
   hideGameOverWindow,
   showYouWinWindow,
   hideYouWinWindow,
+  getValuesFromStartModalWindow,
+  hideStartModalWindow,
+  renderCompetitorList,
 };

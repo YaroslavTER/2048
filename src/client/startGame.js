@@ -12,6 +12,9 @@ import {
   hideGameOverWindow,
   showYouWinWindow,
   hideYouWinWindow,
+  getValuesFromStartModalWindow,
+  hideStartModalWindow,
+  renderCompetitorList,
 } from './render';
 import { handleKeyDown, isValidKey, dontHaveAnyMoves } from './handleKeyDown';
 import {
@@ -22,11 +25,35 @@ import {
   getMaxZIndex,
   isWin,
 } from './moveCalculator';
+import io from 'socket.io-client';
+
+const socket = io();
 
 let itemList = [],
+  competitorSet = {},
   bestScore = 0,
   prevTime = 0,
   score = 0;
+
+const modalWindow = document.getElementsByClassName('start-modal-window')[0];
+modalWindow.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const { name, room } = getValuesFromStartModalWindow();
+
+  hideStartModalWindow();
+  socket.emit('create', { room, name });
+  socket.emit('score', score);
+  socket.emit('refresh');
+});
+
+socket.on('score', ({ name, points }) => {
+  competitorSet[name] = points;
+  renderCompetitorList(competitorSet);
+});
+
+socket.on('refresh', () => {
+  socket.emit('score', 0);
+});
 
 addButtonHandler('keep-going', hideYouWinWindow);
 
@@ -89,6 +116,7 @@ const gameOverHandler = (itemList, prevList) => {
   let someOfMarginsChangedValue = someOfMarginsChanged(itemList, prevList);
   if (someOfMarginsChangedValue) {
     score = scoreHandler(score);
+    socket.emit('score', score);
     itemList = generateBoxList(itemList, 1);
   } else if (isItemListFull(itemList)) {
     if (!someOfMarginsChangedValue) {

@@ -1,18 +1,10 @@
-$border-radius: 3px;
-$container-height: 430px;
-$container-width: 430px;
-$box-height: 100px;
-$box-width: 100px;
-$grid-template: repeat(4, 100px);
-$notes-color: #776e65;
-$white-color: #f9f6f2;
-$button-color: #8f7a66;
-$win-color: #edc32c;
-$window-opacity: 0.6;
-$big-font-size-fire-fox: 35px;
+@import './variables.scss';
+@import './competitorList.scss';
+@import './startModalWindow.scss';
 
 body {
-  background-color: #faf8ef;
+  background-color: $main-background-color;
+  color: $notes-color;
   font-family: 'Gill Sans', sans-serif;
 }
 
@@ -20,7 +12,7 @@ body {
   position: absolute;
   left: 50%;
   margin-top: 20px;
-  margin-left: -215px;
+  margin-left: -300px;
   z-index: -1;
 }
 
@@ -51,11 +43,6 @@ body {
     grid-column: 1/5;
     grid-row: 2;
     margin-top: 10px;
-  }
-
-  .title,
-  .instruction {
-    color: $notes-color;
   }
 
   .new-game {
@@ -103,7 +90,7 @@ body {
   .number-wrapper {
     display: grid;
     justify-items: center;
-    background-color: #bbada0;
+    background-color: $score-background-color;
     font-weight: bolder;
     color: $white-color;
     padding-top: 5px;
@@ -137,7 +124,6 @@ body {
     line-height: $box-height;
     font-size: 40px;
     font-weight: bolder;
-    color: $notes-color;
     background-color: #eee4da;
   }
 }
@@ -153,7 +139,7 @@ body {
   grid-template-columns: $grid-template;
   grid-template-rows: $grid-template;
   grid-auto-flow: column;
-  background-color: #bbada0;
+  background-color: $score-background-color;
   position: absolute;
   z-index: -1;
 
@@ -189,7 +175,6 @@ body {
 }
 
 .value-4 {
-  color: $notes-color !important;
   background-color: #ede0c8 !important;
 }
 
@@ -247,8 +232,7 @@ body {
   margin-top: 40px;
   margin-bottom: 100px;
   width: 450px;
-  font-size: 18px;
-  color: $notes-color;
+  font-size: $notes-font-size;
 }
 
 .highlight {
