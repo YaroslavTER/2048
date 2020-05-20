@@ -1,3 +1,5 @@
+$common-shift: 5px;
+
 .competitor-list-container {
   position: absolute;
   left: 50%;
@@ -29,7 +31,8 @@
     .score {
       background-color: gray;
       border-radius: $border-radius;
-      padding: 5px;
+      padding: $common-shift;
+      margin-left: $common-shift;
       color: $white-color;
       background-color: $score-background-color;
     }

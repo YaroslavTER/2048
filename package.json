@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "parcel ./src/client/index.html",
+    "start-fronted": "parcel ./src/client/index.html",
     "build": "parcel build --public-url . ./src/client/index.html",
-    "start-server": "nodemon ./src/server/index.js"
+    "start": "nodemon ./src/server/index.js"
   },
   "nodemonConfig": {
     "watch": "./src/server/*"
