@@ -35,11 +35,6 @@ let itemList = [],
   prevTime = 0,
   score = 0;
 
-socket.on('score', function ({ name, points }) {
-  competitorSet[name] = points;
-  renderCompetitorList(competitorSet);
-});
-
 const modalWindow = document.getElementsByClassName('start-modal-window')[0];
 modalWindow.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -47,6 +42,17 @@ modalWindow.addEventListener('submit', (e) => {
 
   hideStartModalWindow();
   socket.emit('create', { room, name });
+  socket.emit('score', score);
+  socket.emit('refresh');
+});
+
+socket.on('score', ({ name, points }) => {
+  competitorSet[name] = points;
+  renderCompetitorList(competitorSet);
+});
+
+socket.on('refresh', () => {
+  socket.emit('score', 0);
 });
 
 addButtonHandler('keep-going', hideYouWinWindow);
