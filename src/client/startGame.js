@@ -52,7 +52,7 @@ socket.on('score', ({ name, points }) => {
 });
 
 socket.on('refresh', () => {
-  socket.emit('score', 0);
+  socket.emit('score', score);
 });
 
 addButtonHandler('keep-going', hideYouWinWindow);
