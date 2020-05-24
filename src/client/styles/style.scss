@@ -51,11 +51,11 @@ body {
     display: grid;
     width: 90px;
     margin-left: -28px;
-    font-weight: bolder;
     justify-items: center;
     color: $white-color;
     background-color: $button-color;
     padding: 10px;
+    user-select: none;
 
     &:hover {
       cursor: pointer;
@@ -294,10 +294,6 @@ body {
 @-moz-document url-prefix() {
   .instruction {
     font-size: 15px;
-  }
-
-  .new-game {
-    font-weight: normal !important;
   }
 
   .container {

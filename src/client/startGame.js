@@ -12,8 +12,6 @@ import {
   hideGameOverWindow,
   showYouWinWindow,
   hideYouWinWindow,
-  getValuesFromStartModalWindow,
-  hideStartModalWindow,
   renderCompetitorList,
 } from './render';
 import { handleKeyDown, isValidKey, dontHaveAnyMoves } from './handleKeyDown';
@@ -25,6 +23,7 @@ import {
   getMaxZIndex,
   isWin,
 } from './moveCalculator';
+import { addModalEventListener } from './startModalWindow';
 import io from 'socket.io-client';
 
 const socket = io();
@@ -35,16 +34,7 @@ let itemList = [],
   prevTime = 0,
   score = 0;
 
-const modalWindow = document.getElementsByClassName('start-modal-window')[0];
-modalWindow.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const { name, room } = getValuesFromStartModalWindow();
-
-  hideStartModalWindow();
-  socket.emit('create', { room, name });
-  socket.emit('score', score);
-  socket.emit('refresh');
-});
+addModalEventListener(socket, score);
 
 socket.on('score', ({ name, points }) => {
   competitorSet[name] = points;

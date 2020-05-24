@@ -21,9 +21,12 @@ $font-size: 17px;
   .start-modal-window {
     display: grid;
     grid-template-rows: 0.3fr 0.25fr 0.3fr;
-    width: 380px;
+    grid-template-columns: 0.2fr 0.1fr 0.1fr;
+    max-width: 410px;
+    width: 100%;
     height: 270px;
     padding: 50px;
+    margin: 100px;
     padding-top: $top-down-margin;
     padding-bottom: $top-down-margin;
     border-radius: $border-radius;
@@ -75,7 +78,6 @@ $font-size: 17px;
       justify-items: center;
       height: 35px;
       margin-right: 10px;
-      font-weight: bolder;
       padding-left: 5px;
       padding-right: 5px;
       color: $white-color;
@@ -88,6 +90,11 @@ $font-size: 17px;
       grid-row: 3;
     }
 
+    .generate-room,
+    .play {
+      user-select: none;
+    }
+
     .play {
       grid-column: 1;
       grid-row: 4;
@@ -96,8 +103,14 @@ $font-size: 17px;
       background-color: $button-color;
       color: $white-color;
       font-size: $font-size;
-      font-weight: bolder;
       cursor: pointer;
     }
+  }
+}
+
+@-moz-document url-prefix() {
+  .start-modal-window {
+    grid-template-columns: 0.9fr 0.1fr 0.1fr !important;
+    max-width: 450px !important;
   }
 }
