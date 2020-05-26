@@ -20,13 +20,9 @@ $font-size: 17px;
 
   .start-modal-window {
     display: grid;
-    grid-template-rows: 0.3fr 0.25fr 0.3fr;
-    grid-template-columns: 0.2fr 0.1fr 0.1fr;
     max-width: 410px;
-    width: 100%;
     height: 270px;
     padding: 50px;
-    margin: 100px;
     padding-top: $top-down-margin;
     padding-bottom: $top-down-margin;
     border-radius: $border-radius;
@@ -47,6 +43,7 @@ $font-size: 17px;
         color: $notes-color;
         font-size: $font-size;
         padding-left: 10px;
+        width: 100%;
       }
 
       &::placeholder {
@@ -110,7 +107,6 @@ $font-size: 17px;
 
 @-moz-document url-prefix() {
   .start-modal-window {
-    grid-template-columns: 0.9fr 0.1fr 0.1fr !important;
     max-width: 450px !important;
   }
 }
