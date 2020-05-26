@@ -1,4 +1,4 @@
-# 2048
+# 2048 Multiplayer
 
 You can play [here](https://m2048.herokuapp.com/).
 
