@@ -1,6 +1,6 @@
 # 2048
 
-You can play [here](https://priceless-nightingale-b21a29.netlify.app/).
+You can play [here](https://m2048.herokuapp.com/).
 
 Based on [original game](https://github.com/gabrielecirulli/2048).
 
