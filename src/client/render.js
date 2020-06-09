@@ -268,7 +268,10 @@ const renderCompetitorList = (competitorSet) => {
 };
 
 const createCompetitor = (name, points) => {
-  const competitor = createDiv(null, [{ name: 'class', value: 'competitor' }]),
+  const competitor = createDiv(null, [
+      { name: 'class', value: 'competitor' },
+      { name: 'class', value: name },
+    ]),
     nameBox = createDiv(`${name} : `, [{ name: 'class', value: 'name' }]),
     pointsBox = createDiv(points, [{ name: 'class', value: 'score' }]);
 
@@ -281,9 +284,32 @@ const createCompetitor = (name, points) => {
 const createDiv = (innerText, attributeList) => {
   const box = document.createElement('div');
   box.innerText = innerText;
+  let concatedClassName = '';
 
-  attributeList.forEach(({ name, value }) => box.setAttribute(name, value));
+  attributeList.forEach(({ name, value }) => {
+    if (name === 'class') {
+      concatedClassName += concatedClassName === '' ? value : ` ${value}`;
+    } else {
+      box.setAttribute(name, value);
+    }
+  });
+  box.setAttribute('class', concatedClassName);
   return box;
+};
+
+const updateCompetitorOnGameOver = (userName) => {
+  updateCompetitorOnWinOrLoose(userName, 'game-over-for-competitor');
+};
+
+const updateCompetitorOnWin = (userName) => {
+  updateCompetitorOnWinOrLoose(userName, 'win-for-competitor');
+};
+
+const updateCompetitorOnWinOrLoose = (userName, stateClassName) => {
+  console.log(userName, stateClassName);
+  const competitorDom = document.querySelector(`.${userName} > .score`);
+  competitorDom.classList.add(stateClassName);
+  console.log(competitorDom);
 };
 
 export {
@@ -303,4 +329,6 @@ export {
   getValuesFromStartModalWindow,
   hideStartModalWindow,
   renderCompetitorList,
+  updateCompetitorOnGameOver,
+  updateCompetitorOnWin,
 };

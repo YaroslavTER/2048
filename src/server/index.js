@@ -17,6 +17,14 @@ io.on('connection', (socket) => {
       socket.broadcast.to(room).emit('score', { name, points });
     });
 
+    socket.on('win', () => {
+      socket.broadcast.to(room).emit('win', name);
+    });
+
+    socket.on('game over', () => {
+      socket.broadcast.to(room).emit('game over', name);
+    });
+
     socket.on('refresh', () => {
       socket.broadcast.to(room).emit('refresh');
     });

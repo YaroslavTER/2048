@@ -13,6 +13,8 @@ import {
   showYouWinWindow,
   hideYouWinWindow,
   renderCompetitorList,
+  updateCompetitorOnGameOver,
+  updateCompetitorOnWin,
 } from './render';
 import { handleKeyDown, isValidKey, dontHaveAnyMoves } from './handleKeyDown';
 import {
@@ -39,6 +41,15 @@ addModalEventListener(socket, score);
 socket.on('score', ({ name, points }) => {
   competitorSet[name] = points;
   renderCompetitorList(competitorSet);
+});
+
+socket.on('win', (name) => {
+  console.log(`win for ${name}`);
+  updateCompetitorOnWin(name);
+});
+
+socket.on('game over', (name) => {
+  updateCompetitorOnGameOver(name);
 });
 
 socket.on('refresh', () => {
@@ -78,11 +89,14 @@ function eventHandler(event) {
         itemList = handleKeyDown(keycode, itemList);
         if (isWin(itemList)) {
           showYouWinWindow(getMaxZIndex());
+          setTimeout(() => {
+            socket.emit('win');
+          }, 0);
         }
         itemList = gameOverHandler(itemList, prevList);
         updateRenderredItemList(itemList, prevList);
         markDomElementsForRemove(itemList);
-        setTimeout(function () {
+        setTimeout(() => {
           itemList = removeBoxList(itemList);
         }, 95);
       }
@@ -112,6 +126,7 @@ const gameOverHandler = (itemList, prevList) => {
     if (!someOfMarginsChangedValue) {
       if (dontHaveAnyMoves(itemList)) {
         document.removeEventListener('keydown', eventHandler);
+        socket.emit('game over');
         showGameOverWindow(getMaxZIndex());
       }
     }

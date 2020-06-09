@@ -193,7 +193,8 @@ body {
   background-color: #f67c60 !important;
 }
 
-.value-64 {
+.value-64,
+.game-over-for-competitor {
   color: $white-color !important;
   background-color: #f65e3b !important;
 }
@@ -218,7 +219,8 @@ body {
   background-color: #edc850 !important;
 }
 
-.value-2048 {
+.value-2048,
+.win-for-competitor {
   color: $white-color !important;
   background-color: $win-color !important;
 }
