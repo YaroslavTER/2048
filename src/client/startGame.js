@@ -44,11 +44,10 @@ socket.on('score', ({ name, points }) => {
 });
 
 socket.on('win', (name) => {
-  console.log(`win for ${name}`);
   updateCompetitorOnWin(name);
 });
 
-socket.on('game over', (name) => {
+socket.on('gameOver', (name) => {
   updateCompetitorOnGameOver(name);
 });
 
@@ -126,7 +125,7 @@ const gameOverHandler = (itemList, prevList) => {
     if (!someOfMarginsChangedValue) {
       if (dontHaveAnyMoves(itemList)) {
         document.removeEventListener('keydown', eventHandler);
-        socket.emit('game over');
+        socket.emit('gameOver');
         showGameOverWindow(getMaxZIndex());
       }
     }

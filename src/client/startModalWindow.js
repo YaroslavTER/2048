@@ -13,10 +13,10 @@ const addModalEventListener = (socket, score) => {
     e.preventDefault();
     const { name, room } = getValuesFromStartModalWindow();
 
-    hideStartModalWindow();
     socket.emit('create', { room, name });
     socket.emit('score', score);
     socket.emit('refresh');
+    hideStartModalWindow();
   });
 };
 
