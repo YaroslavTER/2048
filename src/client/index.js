@@ -1,6 +1,48 @@
 import './styles/style.scss';
-import { addButtonHandler } from './render';
+import {
+  addButtonHandler,
+  showConnectionWindow,
+  hideConnectionWindow,
+  drawNumberOfUsers,
+  renderCompetitorList,
+  updateCompetitorOnGameOver,
+  updateCompetitorOnWin,
+} from './render';
+import { addModalEventListener } from './startModalWindow';
+import { getMaxZIndex } from './moveCalculator';
 import { startGame } from './startGame';
+import io from 'socket.io-client';
 
-startGame();
-addButtonHandler('new-game', startGame);
+const socket = io();
+let competitorSet = {};
+
+socket.on('usersConnected', (numberOfUsers) => {
+  drawNumberOfUsers(numberOfUsers);
+});
+
+socket.on('roomIsFull', () => {
+  hideConnectionWindow();
+  startGame(socket, competitorSet);
+  addButtonHandler('new-game', startGame);
+});
+
+socket.on('score', ({ name, points }) => {
+  competitorSet[name] = points;
+  renderCompetitorList(competitorSet);
+});
+
+socket.on('refresh', () => {
+  socket.emit('score', 0);
+});
+
+socket.on('win', (name) => {
+  updateCompetitorOnWin(name);
+});
+
+socket.on('gameOver', (name) => {
+  updateCompetitorOnGameOver(name);
+});
+
+addModalEventListener(socket, 0, () => {
+  showConnectionWindow(getMaxZIndex());
+});

@@ -242,7 +242,8 @@ body {
 }
 
 .game-over,
-.you-win {
+.you-win,
+.connection {
   &-window {
     display: grid;
     justify-items: center;
@@ -268,7 +269,8 @@ body {
   }
 }
 
-.game-over-window {
+.game-over-window,
+.connection-window {
   @include window(rgba($white-color, $window-opacity), $notes-color);
 }
 

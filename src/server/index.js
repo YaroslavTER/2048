@@ -1,8 +1,9 @@
-const app = require('express')();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
-const Bundler = require('parcel-bundler');
-const bundler = new Bundler(__dirname + '/../client/index.html');
+const app = require('express')(),
+  http = require('http').createServer(app),
+  io = require('socket.io')(http),
+  Bundler = require('parcel-bundler'),
+  bundler = new Bundler(__dirname + '/../client/index.html'),
+  numberOfUsersInTheRoom = 2;
 let roomNumber = 0;
 
 app.use(bundler.middleware());
@@ -13,13 +14,23 @@ io.on('connection', (socket) => {
   socket.on('create', ({ room, name }) => {
     console.log(roomNumber);
     if (room === '') {
-      const currentRoom = io.of('/').adapter.rooms[roomNumber];
-      if (currentRoom && currentRoom.length > 1) {
+      let currentRoom = getCurrentRoom(roomNumber);
+      if (currentRoom && currentRoom.length > numberOfUsersInTheRoom - 1) {
         roomNumber++;
       }
+
       room = roomNumber;
     }
     socket.join(room);
+    currentRoom = getCurrentRoom(room);
+
+    if (currentRoom) {
+      if (currentRoom.length > numberOfUsersInTheRoom - 1) {
+        io.in(room).emit('roomIsFull');
+      }
+
+      io.in(room).emit('usersConnected', currentRoom.length);
+    }
     console.log(`a room ${room} has been created`);
     console.log(`user name is ${name}`);
 
@@ -45,15 +56,8 @@ io.on('connection', (socket) => {
   });
 });
 
+const getCurrentRoom = (roomName) => io.of('/').adapter.rooms[roomName];
+
 http.listen(process.env.PORT || 3000, () => {
   console.log('listening on *:3000');
 });
-
-/* 
-- create random room if user didn't generated or input any 
-  (send request on create button that will add user to the room)
-- fill the room with limited number of users during some time
-  (for now let it be 30 seconds)
-- if the room is full, generate the new one and connect the users to it
-  as in the previous step
-*/

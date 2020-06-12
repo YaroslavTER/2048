@@ -5,6 +5,7 @@ import { animate, getMargin, linear } from './animation';
 const windowClassName = {
   gameOver: 'game-over-window',
   youWin: 'you-win-window',
+  connection: 'connection-window',
 };
 
 const generateBoxList = (itemList, numberOfItems) => {
@@ -227,6 +228,11 @@ const showYouWinWindow = (zIndex) => showWindow(zIndex, windowClassName.youWin);
 
 const hideYouWinWindow = () => hideWindow(windowClassName.youWin);
 
+const showConnectionWindow = (zIndex) =>
+  showWindow(zIndex, windowClassName.connection);
+
+const hideConnectionWindow = () => hideWindow(windowClassName.connection);
+
 const showWindow = (zIndex, className) => {
   const window = document.getElementsByClassName(className)[0];
   if (window) {
@@ -306,10 +312,20 @@ const updateCompetitorOnWin = (userName) => {
 };
 
 const updateCompetitorOnWinOrLoose = (userName, stateClassName) => {
-  console.log(userName, stateClassName);
   const competitorDom = document.querySelector(`.${userName} > .score`);
   competitorDom.classList.add(stateClassName);
-  console.log(competitorDom);
+};
+
+const drawCountdown = (timeLeft) => {
+  const timerDom = document.getElementsByClassName('timer')[0];
+  timerDom.innerText = `0:${timeLeft}`;
+};
+
+const drawNumberOfUsers = (numberOfUsers) => {
+  const numberOfUsersDom = document.getElementsByClassName(
+    'number-of-users'
+  )[0];
+  numberOfUsersDom.innerText = `Connected ${numberOfUsers}/2`;
 };
 
 export {
@@ -326,9 +342,13 @@ export {
   hideGameOverWindow,
   showYouWinWindow,
   hideYouWinWindow,
+  showConnectionWindow,
+  hideConnectionWindow,
   getValuesFromStartModalWindow,
   hideStartModalWindow,
   renderCompetitorList,
   updateCompetitorOnGameOver,
   updateCompetitorOnWin,
+  drawCountdown,
+  drawNumberOfUsers,
 };

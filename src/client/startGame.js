@@ -12,9 +12,6 @@ import {
   hideGameOverWindow,
   showYouWinWindow,
   hideYouWinWindow,
-  renderCompetitorList,
-  updateCompetitorOnGameOver,
-  updateCompetitorOnWin,
 } from './render';
 import { handleKeyDown, isValidKey, dontHaveAnyMoves } from './handleKeyDown';
 import {
@@ -25,40 +22,19 @@ import {
   getMaxZIndex,
   isWin,
 } from './moveCalculator';
-import { addModalEventListener } from './startModalWindow';
-import io from 'socket.io-client';
 
-const socket = io();
-
-let itemList = [],
-  competitorSet = {},
+let socket,
+  itemList = [],
   bestScore = 0,
   prevTime = 0,
   score = 0;
 
-addModalEventListener(socket, score);
-
-socket.on('score', ({ name, points }) => {
-  competitorSet[name] = points;
-  renderCompetitorList(competitorSet);
-});
-
-socket.on('win', (name) => {
-  updateCompetitorOnWin(name);
-});
-
-socket.on('gameOver', (name) => {
-  updateCompetitorOnGameOver(name);
-});
-
-socket.on('refresh', () => {
-  socket.emit('score', score);
-});
-
 addButtonHandler('keep-going', hideYouWinWindow);
 
-function startGame() {
+function startGame(inputSocket) {
   const eventName = 'keydown';
+
+  socket = inputSocket;
 
   resetScore();
   renderScore(0);

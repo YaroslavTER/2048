@@ -8,7 +8,7 @@ generateRoomButton.addEventListener('click', () => {
   document.getElementsByClassName('input-room')[0].value = generateRoom();
 });
 
-const addModalEventListener = (socket, score) => {
+const addModalEventListener = (socket, score, showTimerWindow) => {
   modalWindow.addEventListener('submit', (e) => {
     e.preventDefault();
     const { name, room } = getValuesFromStartModalWindow();
@@ -17,6 +17,7 @@ const addModalEventListener = (socket, score) => {
     socket.emit('score', score);
     socket.emit('refresh');
     hideStartModalWindow();
+    showTimerWindow();
   });
 };
 
