@@ -2,35 +2,22 @@ const app = require('express')(),
   http = require('http').createServer(app),
   io = require('socket.io')(http),
   Bundler = require('parcel-bundler'),
-  bundler = new Bundler(__dirname + '/../client/index.html'),
+  bundler = new Bundler(`${__dirname}/../client/index.html`),
+  port = process.env.PORT || 3000,
   numberOfUsersInTheRoom = 2;
 let roomNumber = 0;
 
 app.use(bundler.middleware());
 
+http.listen(port, () => {
+  console.log(`listening on *:${port}`);
+});
+
 io.on('connection', (socket) => {
   console.log('a user connected');
 
   socket.on('create', ({ room, name }) => {
-    console.log(roomNumber);
-    if (room === '') {
-      let currentRoom = getCurrentRoom(roomNumber);
-      if (currentRoom && currentRoom.length > numberOfUsersInTheRoom - 1) {
-        roomNumber++;
-      }
-
-      room = roomNumber;
-    }
-    socket.join(room);
-    currentRoom = getCurrentRoom(room);
-
-    if (currentRoom) {
-      if (currentRoom.length > numberOfUsersInTheRoom - 1) {
-        io.in(room).emit('roomIsFull');
-      }
-
-      io.in(room).emit('usersConnected', currentRoom.length);
-    }
+    room = joinRoom(room, socket);
     console.log(`a room ${room} has been created`);
     console.log(`user name is ${name}`);
 
@@ -56,8 +43,26 @@ io.on('connection', (socket) => {
   });
 });
 
-const getCurrentRoom = (roomName) => io.of('/').adapter.rooms[roomName];
+const joinRoom = (room, socket) => {
+  if (room === '') {
+    let currentRoom = getCurrentRoom(roomNumber);
+    if (currentRoom && currentRoom.length > numberOfUsersInTheRoom - 1) {
+      roomNumber++;
+    }
 
-http.listen(process.env.PORT || 3000, () => {
-  console.log('listening on *:3000');
-});
+    room = roomNumber;
+  }
+  socket.join(room);
+  currentRoom = getCurrentRoom(room);
+
+  if (currentRoom) {
+    if (currentRoom.length > numberOfUsersInTheRoom - 1) {
+      io.in(room).emit('roomIsFull');
+    }
+
+    io.in(room).emit('usersConnected', currentRoom.length);
+  }
+  return room;
+};
+
+const getCurrentRoom = (roomName) => io.of('/').adapter.rooms[roomName];
