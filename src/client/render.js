@@ -3,9 +3,10 @@ import { getKey } from './keyGenerator';
 import { animate, getMargin, linear } from './animation';
 
 const windowClassName = {
-  gameOver: 'game-over-window',
-  youWin: 'you-win-window',
-  connection: 'connection-window',
+  gameOver: 'game-over',
+  youWin: 'you-win',
+  competitorWin: 'competitor-win',
+  connection: 'connection',
 };
 
 const generateBoxList = (itemList, numberOfItems) => {
@@ -215,9 +216,9 @@ const renderNumber = (number, selector) => {
 };
 
 const addButtonHandler = (className, callback) =>
-  document
-    .getElementsByClassName(className)[0]
-    .addEventListener('click', () => callback());
+  Array.from(document.getElementsByClassName(className)).forEach((button) =>
+    button.addEventListener('click', () => callback())
+  );
 
 const showGameOverWindow = (zIndex) =>
   showWindow(zIndex, windowClassName.gameOver);
@@ -227,6 +228,11 @@ const hideGameOverWindow = () => hideWindow(windowClassName.gameOver);
 const showYouWinWindow = (zIndex) => showWindow(zIndex, windowClassName.youWin);
 
 const hideYouWinWindow = () => hideWindow(windowClassName.youWin);
+
+const showCompetitorWinWindow = (zIndex) =>
+  showWindow(zIndex, windowClassName.competitorWin);
+
+const hideCompetitorWinWindow = () => hideWindow(windowClassName.competitorWin);
 
 const showConnectionWindow = (zIndex) =>
   showWindow(zIndex, windowClassName.connection);
@@ -316,16 +322,15 @@ const updateCompetitorOnWinOrLoose = (userName, stateClassName) => {
   competitorDom.classList.add(stateClassName);
 };
 
-const drawCountdown = (timeLeft) => {
-  const timerDom = document.getElementsByClassName('timer')[0];
-  timerDom.innerText = `0:${timeLeft}`;
-};
+const drawNumberOfConnectedUsers = (numberOfUsers) =>
+  setTextToElement('number-of-users', `Connected ${numberOfUsers}/2`);
 
-const drawNumberOfUsers = (numberOfUsers) => {
-  const numberOfUsersDom = document.getElementsByClassName(
-    'number-of-users'
-  )[0];
-  numberOfUsersDom.innerText = `Connected ${numberOfUsers}/2`;
+const drawWinCompetitorName = (name) =>
+  setTextToElement('competitor-name', `${name} has won!`);
+
+const setTextToElement = (className, text) => {
+  const numberOfUsersDom = document.getElementsByClassName(className)[0];
+  numberOfUsersDom.innerText = text;
 };
 
 export {
@@ -342,6 +347,8 @@ export {
   hideGameOverWindow,
   showYouWinWindow,
   hideYouWinWindow,
+  showCompetitorWinWindow,
+  hideCompetitorWinWindow,
   showConnectionWindow,
   hideConnectionWindow,
   getValuesFromStartModalWindow,
@@ -349,6 +356,6 @@ export {
   renderCompetitorList,
   updateCompetitorOnGameOver,
   updateCompetitorOnWin,
-  drawCountdown,
-  drawNumberOfUsers,
+  drawNumberOfConnectedUsers,
+  drawWinCompetitorName,
 };

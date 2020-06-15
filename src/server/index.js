@@ -33,6 +33,10 @@ io.on('connection', (socket) => {
       socket.broadcast.to(room).emit('gameOver', name);
     });
 
+    socket.on('removeEventHandler', () => {
+      io.in(room).emit('removeEventHandler');
+    });
+
     socket.on('refresh', () => {
       socket.broadcast.to(room).emit('refresh');
     });

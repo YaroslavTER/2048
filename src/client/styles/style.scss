@@ -241,24 +241,20 @@ body {
   font-weight: bolder;
 }
 
-.game-over,
-.you-win,
-.connection {
-  &-window {
-    display: grid;
-    justify-items: center;
-    align-items: center;
-    position: absolute;
-    height: 450px;
-    width: 450px;
-    margin-top: -431px;
-    border-radius: 6px;
-    z-index: 1;
+.window {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  position: absolute;
+  height: $window-height;
+  width: $window-width;
+  margin-top: -431px;
+  border-radius: 6px;
+  z-index: 1;
 
-    span {
-      font-size: 40px;
-      font-weight: bolder;
-    }
+  span {
+    font-size: 40px;
+    font-weight: bolder;
   }
 }
 
@@ -269,27 +265,32 @@ body {
   }
 }
 
-.game-over-window,
-.connection-window {
+@mixin button() {
+  padding: 8px;
+  height: 20px;
+  background-color: $button-color;
+  color: $white-color;
+  font-weight: bold;
+  border-radius: $border-radius;
+  cursor: pointer;
+}
+
+.game-over,
+.connection {
   @include window(rgba($white-color, $window-opacity), $notes-color);
 }
 
-.you-win-window {
+.you-win,
+.competitor-win {
   .container {
     display: grid;
     justify-items: center;
     height: 100px;
 
-    .keep-going {
+    .find-new-room {
       display: grid;
       align-items: center;
-      padding: 8px;
-      height: 20px;
-      background-color: $button-color;
-      color: $white-color;
-      font-weight: bold;
-      border-radius: $border-radius;
-      cursor: pointer;
+      @include button();
     }
   }
   @include window(rgba($win-color, $window-opacity), $white-color);
@@ -309,7 +310,7 @@ body {
     }
   }
 
-  .you-win-window {
+  .you-win {
     span {
       font-size: $big-font-size-fire-fox !important;
     }

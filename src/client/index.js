@@ -3,7 +3,10 @@ import {
   addButtonHandler,
   showConnectionWindow,
   hideConnectionWindow,
-  drawNumberOfUsers,
+  hideGameOverWindow,
+  showCompetitorWinWindow,
+  drawNumberOfConnectedUsers,
+  drawWinCompetitorName,
   renderCompetitorList,
   updateCompetitorOnGameOver,
   updateCompetitorOnWin,
@@ -17,7 +20,7 @@ const socket = io();
 let competitorSet = {};
 
 socket.on('usersConnected', (numberOfUsers) => {
-  drawNumberOfUsers(numberOfUsers);
+  drawNumberOfConnectedUsers(numberOfUsers);
 });
 
 socket.on('roomIsFull', () => {
@@ -37,6 +40,10 @@ socket.on('refresh', () => {
 
 socket.on('win', (name) => {
   updateCompetitorOnWin(name);
+  hideGameOverWindow();
+  showCompetitorWinWindow(getMaxZIndex());
+  drawWinCompetitorName(name);
+  socket.emit('removeEventHandler');
 });
 
 socket.on('gameOver', (name) => {

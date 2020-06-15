@@ -29,12 +29,16 @@ let socket,
   prevTime = 0,
   score = 0;
 
-addButtonHandler('keep-going', hideYouWinWindow);
+addButtonHandler('find-new-room', () => location.reload());
 
 function startGame(inputSocket) {
   const eventName = 'keydown';
 
   socket = inputSocket;
+
+  socket.on('removeEventHandler', () => {
+    document.removeEventListener(eventName, eventHandler);
+  });
 
   resetScore();
   renderScore(0);
