@@ -6,7 +6,6 @@
     <title>2048</title>
   </head>
   <body class="scroll-lock">
-    <!-- class="scroll-lock" -->
     <div class="grid-container">
       <div class="header">
         <div class="title">
@@ -30,7 +29,7 @@
           <span class="instruction highlight">2048 tile!</span>
         </div>
         <div class="new-game">
-          New Game
+          Reset Grid
         </div>
       </div>
       <div class="container"></div>
@@ -53,10 +52,10 @@
         <div class="place"></div>
       </div>
       <div class="game-over window hidden">
-        <span>Game Over</span>
+        <span>Can't move</span>
       </div>
       <div class="connection window hidden">
-        <span class="number-of-users">Connected</span>
+        <span class="number-of-users">Disconnected</span>
       </div>
       <div class="competitor-win window hidden">
         <div class="container">
@@ -83,7 +82,7 @@
         Clear
       </div>
     </div>
-    <div class="modal-window-container">
+    <div class="modal-window-container hidden">
       <form class="start-modal-window">
         <div class="title">Join the room</div>
         <input

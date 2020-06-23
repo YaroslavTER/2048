@@ -1,6 +1,10 @@
 import './styles/style.scss';
+import io from 'socket.io-client';
+import Navigo from 'navigo';
 import {
   addButtonHandler,
+  hideStartModalWindow,
+  showStartModalWindow,
   showConnectionWindow,
   hideConnectionWindow,
   hideGameOverWindow,
@@ -14,9 +18,9 @@ import {
 import { addModalEventListener } from './startModalWindow';
 import { getMaxZIndex } from './moveCalculator';
 import { startGame } from './startGame';
-import io from 'socket.io-client';
 
-const socket = io();
+const socket = io(),
+  router = new Navigo(null, true, '#');
 let competitorSet = {};
 
 socket.on('usersConnected', (numberOfUsers) => {
@@ -26,7 +30,9 @@ socket.on('usersConnected', (numberOfUsers) => {
 socket.on('roomIsFull', () => {
   hideConnectionWindow();
   startGame(socket, competitorSet);
-  addButtonHandler('new-game', startGame);
+  addButtonHandler('new-game', () => {
+    startGame(socket, competitorSet);
+  });
 });
 
 socket.on('score', ({ name, points }) => {
@@ -50,6 +56,18 @@ socket.on('gameOver', (name) => {
   updateCompetitorOnGameOver(name);
 });
 
-addModalEventListener(socket, 0, () => {
+router
+  .on({
+    '/': () => {
+      router.navigate(`/`);
+      showStartModalWindow();
+    },
+    '/:room': () => {
+      hideStartModalWindow();
+    },
+  })
+  .resolve();
+
+addModalEventListener(socket, router, 0, () => {
   showConnectionWindow(getMaxZIndex());
 });

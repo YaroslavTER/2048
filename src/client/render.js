@@ -260,11 +260,20 @@ const getValuesFromStartModalWindow = () => ({
   room: document.getElementsByClassName('input-room')[0].value,
 });
 
-const hideStartModalWindow = () => {
+const showStartModalWindow = () => isStartModalWindowHidden(false);
+
+const hideStartModalWindow = () => isStartModalWindowHidden(true);
+
+const isStartModalWindowHidden = (isHidden) => {
+  const modalConatinerMethod = isHidden ? 'add' : 'remove',
+    scrollLockMethod = isHidden ? 'remove' : 'add';
+
   document
     .getElementsByClassName('modal-window-container')[0]
-    .classList.add('hidden');
-  document.getElementsByTagName('body')[0].classList.remove('scroll-lock');
+    .classList[modalConatinerMethod]('hidden');
+  document
+    .getElementsByTagName('body')[0]
+    .classList[scrollLockMethod]('scroll-lock');
 };
 
 const renderCompetitorList = (competitorSet) => {
@@ -352,6 +361,7 @@ export {
   showConnectionWindow,
   hideConnectionWindow,
   getValuesFromStartModalWindow,
+  showStartModalWindow,
   hideStartModalWindow,
   renderCompetitorList,
   updateCompetitorOnGameOver,

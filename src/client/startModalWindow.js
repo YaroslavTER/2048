@@ -1,14 +1,14 @@
 import { getValuesFromStartModalWindow, hideStartModalWindow } from './render';
 import { generateRoom } from './roomGenerator';
 
-const modalWindow = document.getElementsByClassName('start-modal-window')[0],
+let modalWindow = document.getElementsByClassName('start-modal-window')[0],
   generateRoomButton = document.getElementsByClassName('generate-room')[0];
 
 generateRoomButton.addEventListener('click', () => {
   document.getElementsByClassName('input-room')[0].value = generateRoom();
 });
 
-const addModalEventListener = (socket, score, showTimerWindow) => {
+const addModalEventListener = (socket, router, score, showConnectionWindow) => {
   modalWindow.addEventListener('submit', (e) => {
     e.preventDefault();
     const { name, room } = getValuesFromStartModalWindow();
@@ -16,9 +16,16 @@ const addModalEventListener = (socket, score, showTimerWindow) => {
     socket.emit('create', { room, name });
     socket.emit('score', score);
     socket.emit('refresh');
+    router.navigate(`/${getRoomUrl(room)}`);
     hideStartModalWindow();
-    showTimerWindow();
+    showConnectionWindow();
   });
 };
 
-export { addModalEventListener };
+const getRoomUrl = (room) => (room === '' ? 'public' : `private-${room}`);
+
+const removeAllModalEventListeners = () => {
+  modalWindow = modalWindow.cloneNode(true);
+};
+
+export { addModalEventListener, removeAllModalEventListeners };

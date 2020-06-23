@@ -25,6 +25,7 @@
   "dependencies": {
     "autoprefixer": "^9.7.6",
     "express": "^4.17.1",
+    "navigo": "^7.1.2",
     "parcel-bundler": "^1.12.4",
     "postcss-modules": "^2.0.0",
     "socket.io": "^2.3.0",
