@@ -60,10 +60,12 @@ router
   .on({
     '/': () => {
       router.navigate(`/`);
+      socket.emit('leaveRoom');
       showStartModalWindow();
     },
     '/:room': () => {
       hideStartModalWindow();
+      socket.connect();
     },
   })
   .resolve();

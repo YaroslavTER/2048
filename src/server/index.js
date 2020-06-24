@@ -21,6 +21,11 @@ io.on('connection', (socket) => {
     console.log(`a room ${room} has been created`);
     console.log(`user name is ${name}`);
 
+    socket.on('leaveRoom', () => {
+      socket.disconnect();
+      console.log(`user ${socket.id} has left room ${room}`);
+    });
+
     socket.on('score', (points) => {
       socket.broadcast.to(room).emit('score', { name, points });
     });
