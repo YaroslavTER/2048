@@ -12,6 +12,7 @@ import {
   drawNumberOfConnectedUsers,
   drawWinCompetitorName,
   renderCompetitorList,
+  clearCompetitorList,
   updateCompetitorOnGameOver,
   updateCompetitorOnWin,
 } from './render';
@@ -62,6 +63,8 @@ router
       router.navigate(`/`);
       socket.emit('leaveRoom');
       showStartModalWindow();
+      clearCompetitorList();
+      competitorSet = {};
     },
     '/:room': () => {
       hideStartModalWindow();

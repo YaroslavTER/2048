@@ -5,7 +5,8 @@ const app = require('express')(),
   bundler = new Bundler(`${__dirname}/../client/index.html`),
   port = process.env.PORT || 3000,
   numberOfUsersInTheRoom = 2;
-let roomNumber = 0;
+let roomNumber = 0,
+  isRoomLocked = {};
 
 app.use(bundler.middleware());
 
@@ -17,44 +18,52 @@ io.on('connection', (socket) => {
   console.log('a user connected');
 
   socket.on('create', ({ room, name }) => {
-    room = joinRoom(room, socket);
-    console.log(`a room ${room} has been created`);
-    console.log(`user name is ${name}`);
+    if (!isRoomLocked[room]) {
+      room = joinRoom(room, socket);
+      console.log(`a room ${room} has been created`);
+      console.log(`user name is ${name}`);
 
-    socket.on('leaveRoom', () => {
-      socket.disconnect();
-      console.log(`user ${socket.id} has left room ${room}`);
-    });
+      socket.on('leaveRoom', () => {
+        socket.disconnect();
+        console.log(`user ${socket.id} has left room ${room}`);
+      });
 
-    socket.on('score', (points) => {
-      socket.broadcast.to(room).emit('score', { name, points });
-    });
+      socket.on('score', (points) => {
+        socket.broadcast.to(room).emit('score', { name, points });
+      });
 
-    socket.on('win', () => {
-      socket.broadcast.to(room).emit('win', name);
-    });
+      socket.on('win', () => {
+        socket.broadcast.to(room).emit('win', name);
+      });
 
-    socket.on('gameOver', () => {
-      socket.broadcast.to(room).emit('gameOver', name);
-    });
+      socket.on('gameOver', () => {
+        socket.broadcast.to(room).emit('gameOver', name);
+      });
 
-    socket.on('removeEventHandler', () => {
-      io.in(room).emit('removeEventHandler');
-    });
+      socket.on('removeEventHandler', () => {
+        io.in(room).emit('removeEventHandler');
+      });
 
-    socket.on('refresh', () => {
-      socket.broadcast.to(room).emit('refresh');
-    });
+      socket.on('refresh', () => {
+        socket.broadcast.to(room).emit('refresh');
+      });
 
-    socket.on('disconnect', () => {
-      console.log('user disconnected');
-    });
+      socket.on('disconnect', () => {
+        console.log('user disconnected');
+      });
+    }
   });
 });
 
 const joinRoom = (room, socket) => {
   if (room === '') {
-    let currentRoom = getCurrentRoom(roomNumber);
+    let currentRoom;
+
+    if (isRoomLocked[roomNumber]) {
+      roomNumber++;
+    }
+
+    currentRoom = getCurrentRoom(roomNumber);
     if (currentRoom && currentRoom.length > numberOfUsersInTheRoom - 1) {
       roomNumber++;
     }
@@ -67,6 +76,7 @@ const joinRoom = (room, socket) => {
   if (currentRoom) {
     if (currentRoom.length > numberOfUsersInTheRoom - 1) {
       io.in(room).emit('roomIsFull');
+      isRoomLocked[room] = true;
     }
 
     io.in(room).emit('usersConnected', currentRoom.length);

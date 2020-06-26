@@ -24,8 +24,4 @@ const addModalEventListener = (socket, router, score, showConnectionWindow) => {
 
 const getRoomUrl = (room) => (room === '' ? 'public' : `private-${room}`);
 
-const removeAllModalEventListeners = () => {
-  modalWindow = modalWindow.cloneNode(true);
-};
-
-export { addModalEventListener, removeAllModalEventListeners };
+export { addModalEventListener };

@@ -62,6 +62,7 @@ const clearChildElements = (domElement) => {
       domElement.removeChild(domElement.lastChild);
     }
   }
+  return domElement;
 };
 
 const createBox = ({ number, key, margin }, container, zIndex) => {
@@ -278,15 +279,19 @@ const isStartModalWindowHidden = (isHidden) => {
 
 const renderCompetitorList = (competitorSet) => {
   const keyList = Object.keys(competitorSet),
-    competitorList = document.getElementsByClassName('competitor-list')[0];
+    competitorList = resetCompetitorList();
 
-  clearChildElements(competitorList);
   keyList.forEach((key) => {
     const name = key,
       points = competitorSet[key];
     competitorList.appendChild(createCompetitor(name, points));
   });
 };
+
+const clearCompetitorList = () => (resetCompetitorList().innerText = 'Clear');
+
+const resetCompetitorList = () =>
+  clearChildElements(document.getElementsByClassName('competitor-list')[0]);
 
 const createCompetitor = (name, points) => {
   const competitor = createDiv(null, [
@@ -364,6 +369,7 @@ export {
   showStartModalWindow,
   hideStartModalWindow,
   renderCompetitorList,
+  clearCompetitorList,
   updateCompetitorOnGameOver,
   updateCompetitorOnWin,
   drawNumberOfConnectedUsers,
