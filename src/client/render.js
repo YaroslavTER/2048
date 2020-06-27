@@ -9,6 +9,11 @@ const windowClassName = {
   connection: 'connection',
 };
 
+let usersLimit;
+
+const setNumberOfUsers = (inputNumberOfUsers) =>
+  (usersLimit = inputNumberOfUsers);
+
 const generateBoxList = (itemList, numberOfItems) => {
   const list = JSON.parse(JSON.stringify(itemList));
   for (let i = 0; i < numberOfItems; i++) {
@@ -337,7 +342,10 @@ const updateCompetitorOnWinOrLoose = (userName, stateClassName) => {
 };
 
 const drawNumberOfConnectedUsers = (numberOfUsers) =>
-  setTextToElement('number-of-users', `Connected ${numberOfUsers}/2`);
+  setTextToElement(
+    'number-of-users',
+    `Connected ${numberOfUsers}/${usersLimit}`
+  );
 
 const drawWinCompetitorName = (name) =>
   setTextToElement('competitor-name', `${name} has won!`);
@@ -348,6 +356,7 @@ const setTextToElement = (className, text) => {
 };
 
 export {
+  setNumberOfUsers,
   renderItemList,
   updateRenderredItemList,
   markDomElementsForRemove,

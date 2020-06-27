@@ -16,6 +16,7 @@ http.listen(port, () => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  socket.emit('usersLimit', numberOfUsersInTheRoom);
 
   socket.on('create', ({ room, name }) => {
     if (!isRoomLocked[room]) {

@@ -2,6 +2,7 @@ import './styles/style.scss';
 import io from 'socket.io-client';
 import Navigo from 'navigo';
 import {
+  setNumberOfUsers,
   addButtonHandler,
   hideStartModalWindow,
   showStartModalWindow,
@@ -60,6 +61,10 @@ socket.on('win', (name) => {
 
 socket.on('gameOver', (name) => {
   updateCompetitorOnGameOver(name);
+});
+
+socket.on('usersLimit', (numberOfUsers) => {
+  setNumberOfUsers(numberOfUsers);
 });
 
 router
