@@ -239,6 +239,7 @@ body {
 
 .highlight {
   font-weight: bolder;
+  color: $notes-color;
 }
 
 .window {
@@ -319,4 +320,22 @@ body {
 
 .hidden {
   display: none;
+}
+
+.go-back {
+  position: relative;
+
+  &-image {
+    position: fixed;
+    bottom: 10px;
+    padding-left: 70px;
+    max-width: 50px;
+    max-height: 50px;
+    cursor: pointer;
+    z-index: -1;
+
+    & path {
+      fill: $button-color;
+    }
+  }
 }

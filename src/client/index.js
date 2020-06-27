@@ -21,8 +21,13 @@ import { getMaxZIndex } from './moveCalculator';
 import { startGame, eventHandler } from './startGame';
 
 const socket = io(),
-  router = new Navigo(null, true, '#');
+  router = new Navigo(null, true, '#'),
+  goBack = document.getElementsByClassName('go-back')[0];
 let competitorSet = {};
+
+goBack.addEventListener('click', () => {
+  router.navigate(`/`);
+});
 
 socket.on('usersConnected', (numberOfUsers) => {
   drawNumberOfConnectedUsers(numberOfUsers);
