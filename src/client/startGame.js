@@ -113,4 +113,4 @@ const gameOverHandler = (itemList, prevList) => {
   return itemList;
 };
 
-export { startGame };
+export { startGame, eventHandler };

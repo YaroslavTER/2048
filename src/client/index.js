@@ -18,7 +18,7 @@ import {
 } from './render';
 import { addModalEventListener } from './startModalWindow';
 import { getMaxZIndex } from './moveCalculator';
-import { startGame } from './startGame';
+import { startGame, eventHandler } from './startGame';
 
 const socket = io(),
   router = new Navigo(null, true, '#');
@@ -61,7 +61,9 @@ router
   .on({
     '/': () => {
       router.navigate(`/`);
+      socket.emit('gameOver');
       socket.emit('leaveRoom');
+      document.removeEventListener('keydown', eventHandler);
       showStartModalWindow();
       clearCompetitorList();
       competitorSet = {};
