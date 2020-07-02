@@ -42,8 +42,9 @@ socket.on('roomIsFull', () => {
   });
 });
 
-socket.on('score', ({ name, points }) => {
-  competitorSet[name] = points;
+socket.on('score', ({ name, points, color, id }) => {
+  console.log(id);
+  competitorSet[id] = { points, name, color };
   renderCompetitorList(competitorSet);
 });
 
@@ -70,6 +71,9 @@ socket.on('usersLimit', (numberOfUsers) => {
 router
   .on({
     '/': () => {
+      document.getElementsByClassName(
+        'input-name'
+      )[0].value = window.localStorage.getItem('name');
       router.navigate(`/`);
       socket.emit('gameOver');
       socket.emit('leaveRoom');

@@ -4,7 +4,7 @@ const app = require('express')(),
   Bundler = require('parcel-bundler'),
   bundler = new Bundler(`${__dirname}/../client/index.html`),
   port = process.env.PORT || 3000,
-  numberOfUsersInTheRoom = 2;
+  numberOfUsersInTheRoom = 4;
 let roomNumber = 0,
   isRoomLocked = {};
 
@@ -18,7 +18,7 @@ io.on('connection', (socket) => {
   console.log('a user connected');
   socket.emit('usersLimit', numberOfUsersInTheRoom);
 
-  socket.on('create', ({ room, name }) => {
+  socket.on('create', ({ room, name, color }) => {
     if (!isRoomLocked[room]) {
       room = joinRoom(room, socket);
       console.log(`a room ${room} has been created`);
@@ -30,7 +30,9 @@ io.on('connection', (socket) => {
       });
 
       socket.on('score', (points) => {
-        socket.broadcast.to(room).emit('score', { name, points });
+        socket.broadcast
+          .to(room)
+          .emit('score', { name, points, id: socket.id, color });
       });
 
       socket.on('win', () => {
