@@ -20,6 +20,7 @@ io.on('connection', (socket) => {
 
   socket.on('create', ({ room, name, color }) => {
     if (!isRoomLocked[room]) {
+      const { id } = socket;
       room = joinRoom(room, socket);
       console.log(`a room ${room} has been created`);
       console.log(`user name is ${name}`);
@@ -30,17 +31,15 @@ io.on('connection', (socket) => {
       });
 
       socket.on('score', (points) => {
-        socket.broadcast
-          .to(room)
-          .emit('score', { name, points, id: socket.id, color });
+        socket.broadcast.to(room).emit('score', { name, points, id, color });
       });
 
       socket.on('win', () => {
-        socket.broadcast.to(room).emit('win', name);
+        socket.broadcast.to(room).emit('win', id);
       });
 
       socket.on('gameOver', () => {
-        socket.broadcast.to(room).emit('gameOver', name);
+        socket.broadcast.to(room).emit('gameOver', id);
       });
 
       socket.on('removeEventHandler', () => {

@@ -1,6 +1,7 @@
 import { size } from './moveCalculator';
 import { getKey } from './keyGenerator';
 import { animate, getMargin, linear } from './animation';
+import { playerStatus } from './playerStatus';
 
 const windowClassName = {
     gameOver: 'game-over',
@@ -313,9 +314,15 @@ const renderCompetitorList = (competitorSet) => {
     competitorList = resetCompetitorList();
 
   keyList.forEach((key) => {
-    const { points, name, color, id } = competitorSet[key],
+    const { points, name, color, id, status } = competitorSet[key],
       colorClassName = `${id}-${color}`.replace('#', ''),
-      competitorDom = createCompetitor(name, points, colorClassName);
+      competitorDom = createCompetitor(
+        name,
+        points,
+        colorClassName,
+        getPlayerStatusClassName(status)
+      );
+
     appendChildStyle(
       competitorDom,
       `.${colorClassName} {
@@ -326,6 +333,22 @@ const renderCompetitorList = (competitorSet) => {
   });
 };
 
+const getPlayerStatusClassName = (status) => {
+  const { win, loose } = playerStatus;
+  let className = '';
+
+  switch (status) {
+    case win:
+      className = 'win-for-competitor';
+      break;
+    case loose:
+      className = 'game-over-for-competitor';
+      break;
+  }
+
+  return className;
+};
+
 const getRandomColor = () =>
   nameColorList[randomInRange(0, nameColorList.length - 1)];
 
@@ -334,7 +357,7 @@ const clearCompetitorList = () => (resetCompetitorList().innerText = 'Clear');
 const resetCompetitorList = () =>
   clearChildElements(document.getElementsByClassName('competitor-list')[0]);
 
-const createCompetitor = (name, points, colorClassName) => {
+const createCompetitor = (name, points, colorClassName, statusClassName) => {
   const competitor = createDiv(null, [
       { name: 'class', value: 'competitor' },
       { name: 'class', value: name },
@@ -343,7 +366,14 @@ const createCompetitor = (name, points, colorClassName) => {
       { name: 'class', value: 'name' },
       { name: 'class', value: colorClassName },
     ]),
-    pointsBox = createDiv(points, [{ name: 'class', value: 'score' }]);
+    poinsBoxClassList = [{ name: 'class', value: 'score' }];
+  let pointsBox;
+
+  if (statusClassName !== '') {
+    poinsBoxClassList.push({ name: 'class', value: statusClassName });
+  }
+
+  pointsBox = createDiv(points, poinsBoxClassList);
 
   competitor.appendChild(nameBox);
   competitor.appendChild(pointsBox);
@@ -365,19 +395,6 @@ const createDiv = (innerText, attributeList) => {
   });
   box.setAttribute('class', concatedClassName);
   return box;
-};
-
-const updateCompetitorOnGameOver = (userName) => {
-  updateCompetitorOnWinOrLoose(userName, 'game-over-for-competitor');
-};
-
-const updateCompetitorOnWin = (userName) => {
-  updateCompetitorOnWinOrLoose(userName, 'win-for-competitor');
-};
-
-const updateCompetitorOnWinOrLoose = (userName, stateClassName) => {
-  const competitorDom = document.querySelector(`.${userName} > .score`);
-  competitorDom.classList.add(stateClassName);
 };
 
 const drawNumberOfConnectedUsers = (numberOfUsers) =>
@@ -419,8 +436,6 @@ export {
   renderCompetitorList,
   getRandomColor,
   clearCompetitorList,
-  updateCompetitorOnGameOver,
-  updateCompetitorOnWin,
   drawNumberOfConnectedUsers,
   drawWinCompetitorName,
 };

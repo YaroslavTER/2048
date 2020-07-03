@@ -14,11 +14,10 @@ import {
   drawWinCompetitorName,
   renderCompetitorList,
   clearCompetitorList,
-  updateCompetitorOnGameOver,
-  updateCompetitorOnWin,
 } from './render';
 import { addModalEventListener } from './startModalWindow';
 import { getMaxZIndex } from './moveCalculator';
+import { playerStatus, updateCompetitorStatus } from './playerStatus';
 import { startGame, eventHandler } from './startGame';
 
 const socket = io(),
@@ -43,8 +42,8 @@ socket.on('roomIsFull', () => {
 });
 
 socket.on('score', ({ name, points, color, id }) => {
-  console.log(id);
-  competitorSet[id] = { points, name, color };
+  const { playing: status } = playerStatus;
+  competitorSet[id] = { points, name, color, status };
   renderCompetitorList(competitorSet);
 });
 
@@ -52,16 +51,20 @@ socket.on('refresh', () => {
   socket.emit('score', 0);
 });
 
-socket.on('win', (name) => {
-  updateCompetitorOnWin(name);
+socket.on('win', (id) => {
+  const { name } = competitorSet[id];
+  competitorSet[id] = updateCompetitorStatus(competitorSet, id, 'win');
+
+  renderCompetitorList(competitorSet);
   hideGameOverWindow();
   showCompetitorWinWindow(getMaxZIndex());
   drawWinCompetitorName(name);
   socket.emit('removeEventHandler');
 });
 
-socket.on('gameOver', (name) => {
-  updateCompetitorOnGameOver(name);
+socket.on('gameOver', (id) => {
+  competitorSet[id] = updateCompetitorStatus(competitorSet, id, 'loose');
+  renderCompetitorList(competitorSet);
 });
 
 socket.on('usersLimit', (numberOfUsers) => {
