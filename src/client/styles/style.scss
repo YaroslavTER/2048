@@ -298,6 +298,12 @@ body {
 }
 
 @-moz-document url-prefix() {
+  .header {
+    .title {
+      font-size: 55px;
+    }
+  }
+
   .instruction {
     font-size: 15px;
   }
