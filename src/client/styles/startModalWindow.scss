@@ -1,5 +1,5 @@
 $margin-top: 15px;
-$top-down-margin: 20px;
+$top-down-margin: 30px;
 $font-size: 17px;
 
 .scroll-lock {
@@ -33,6 +33,7 @@ $font-size: 17px;
       margin: 0 auto;
       font-size: 14px;
       max-width: 350px;
+      max-height: 100px;
 
       p {
         margin-top: 5px;
