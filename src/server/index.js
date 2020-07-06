@@ -4,7 +4,7 @@ const app = require('express')(),
   Bundler = require('parcel-bundler'),
   bundler = new Bundler(`${__dirname}/../client/index.html`),
   port = process.env.PORT || 3000,
-  numberOfUsersInTheRoom = 7;
+  numberOfUsersInTheRoom = 2;
 let roomNumber = 0,
   isRoomLocked = {};
 
