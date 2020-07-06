@@ -21,12 +21,24 @@ $font-size: 17px;
   .start-modal-window {
     display: grid;
     max-width: 410px;
-    height: 270px;
+    min-height: 400px;
     padding: 50px;
     padding-top: $top-down-margin;
     padding-bottom: $top-down-margin;
     border-radius: $border-radius;
     background-color: $main-background-color;
+    margin-bottom: -130px;
+
+    .note {
+      margin: 0 auto;
+      font-size: 14px;
+      max-width: 350px;
+
+      p {
+        margin-top: 5px;
+        margin-bottom: 0px;
+      }
+    }
 
     input,
     .generate-room {
@@ -101,6 +113,11 @@ $font-size: 17px;
       color: $white-color;
       font-size: $font-size;
       cursor: pointer;
+    }
+
+    .note {
+      grid-column: 1/3;
+      grid-row: 5;
     }
   }
 }
