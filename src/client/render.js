@@ -9,6 +9,7 @@ const windowClassName = {
     competitorWin: 'competitor-win',
     connection: 'connection',
   },
+  hideClassName = 'hidden',
   nameColorList = [
     '#a75610',
     '#b96921',
@@ -275,14 +276,13 @@ const hideConnectionWindow = () => hideWindow(windowClassName.connection);
 const showWindow = (zIndex, className) => {
   const window = document.getElementsByClassName(className)[0];
   if (window) {
-    window.classList.remove('hidden');
+    window.classList.remove(hideClassName);
     window.style.zIndex = zIndex;
   }
 };
 
 const hideWindow = (className) => {
-  const gameOverWindow = document.getElementsByClassName(className)[0],
-    hideClassName = 'hidden';
+  const gameOverWindow = document.getElementsByClassName(className)[0];
   if (!gameOverWindow.classList.contains(hideClassName)) {
     gameOverWindow.classList.add(hideClassName);
   }
@@ -295,7 +295,21 @@ const getValuesFromStartModalWindow = () => ({
 
 const showStartModalWindow = () => isStartModalWindowHidden(false);
 
+const showStartModalWindowContainerOnly = () => {
+  document
+    .getElementsByClassName('start-modal-window')[0]
+    .classList.add(hideClassName);
+  document
+    .getElementsByClassName('modal-window-container')[0]
+    .classList.remove(hideClassName);
+  document
+    .getElementsByClassName('modal-window-container-info')[0]
+    .classList.remove(hideClassName);
+};
+
 const hideStartModalWindow = () => isStartModalWindowHidden(true);
+
+const isMobileDevice = () => window.innerWidth <= 494;
 
 const isStartModalWindowHidden = (isHidden) => {
   const modalConatinerMethod = isHidden ? 'add' : 'remove',
@@ -303,7 +317,7 @@ const isStartModalWindowHidden = (isHidden) => {
 
   document
     .getElementsByClassName('modal-window-container')[0]
-    .classList[modalConatinerMethod]('hidden');
+    .classList[modalConatinerMethod](hideClassName);
   document
     .getElementsByTagName('body')[0]
     .classList[scrollLockMethod]('scroll-lock');
@@ -432,7 +446,9 @@ export {
   hideConnectionWindow,
   getValuesFromStartModalWindow,
   showStartModalWindow,
+  showStartModalWindowContainerOnly,
   hideStartModalWindow,
+  isMobileDevice,
   renderCompetitorList,
   getRandomColor,
   clearCompetitorList,

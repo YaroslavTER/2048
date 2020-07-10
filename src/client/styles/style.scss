@@ -325,7 +325,7 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .go-back {
@@ -335,8 +335,10 @@ body {
     position: fixed;
     bottom: 10px;
     padding-left: 70px;
-    max-width: 50px;
-    max-height: 50px;
+    max-width: $back-button-size;
+    min-width: $back-button-size;
+    max-height: $back-button-size;
+    min-height: $back-button-size;
     cursor: pointer;
     z-index: -1;
 

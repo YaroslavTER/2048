@@ -6,6 +6,8 @@ import {
   addButtonHandler,
   hideStartModalWindow,
   showStartModalWindow,
+  showStartModalWindowContainerOnly,
+  isMobileDevice,
   showConnectionWindow,
   hideConnectionWindow,
   hideGameOverWindow,
@@ -74,16 +76,20 @@ socket.on('usersLimit', (numberOfUsers) => {
 router
   .on({
     '/': () => {
-      document.getElementsByClassName(
-        'input-name'
-      )[0].value = window.localStorage.getItem('name');
-      router.navigate(`/`);
-      socket.emit('gameOver');
-      socket.emit('leaveRoom');
-      document.removeEventListener('keydown', eventHandler);
-      showStartModalWindow();
-      clearCompetitorList();
-      competitorSet = {};
+      if (!isMobileDevice()) {
+        document.getElementsByClassName(
+          'input-name'
+        )[0].value = window.localStorage.getItem('name');
+        router.navigate(`/`);
+        socket.emit('gameOver');
+        socket.emit('leaveRoom');
+        document.removeEventListener('keydown', eventHandler);
+        showStartModalWindow();
+        clearCompetitorList();
+        competitorSet = {};
+      } else {
+        showStartModalWindowContainerOnly();
+      }
     },
     '/:room': () => {
       hideStartModalWindow();
